@@ -1,22 +1,26 @@
 package com.example.demo.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "call_logs")
 public class CallLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String callDate;
+    private Long userId;
+    private LocalDate callDate;
     private String fileName;
     private String filePath;
-    private String createdPath;
-    private Long userId;
+    private LocalDate createdAt;
     private int status;
-    private String updatedAt;
+    private LocalDate updatedAt;
 
     // ゲッターとセッター
     public Long getId() {
@@ -27,11 +31,11 @@ public class CallLog {
         this.id = id;
     }
 
-    public String getCallDate() {
+    public LocalDate getCallDate() {
         return callDate;
     }
 
-    public void setCallDate(String callDate) {
+    public void setCallDate(LocalDate callDate) {
         this.callDate = callDate;
     }
 
@@ -51,12 +55,12 @@ public class CallLog {
         this.filePath = filePath;
     }
 
-    public String getCreatedPath() {
-        return createdPath;
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreatedPath(String createdPath) {
-        this.createdPath = createdPath;
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getUserId() {
@@ -75,11 +79,24 @@ public class CallLog {
         this.status = status;
     }
 
-    public String getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "CallLog{id=" + id + 
+               ", userId=" + userId + 
+               ", callDate='" + callDate + 
+               "', fileName='" + fileName + 
+               "', filePath='" + filePath + 
+               "', createdAt='" + createdAt + 
+               "', status=" + status + 
+               ", updatedAt='" + updatedAt + "'}";
+    }
+
 }
