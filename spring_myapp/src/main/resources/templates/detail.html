@@ -20,8 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        　　//callLogs のリストをループして表示 
-        <tr th:each="callLog : ${callLogs}">
+            <tr th:each="callLog : ${callLogs}">
             <td th:text="${callLog.id}"></td>
             <td th:text="${callLog.userId}"></td>
             <td th:text="${callLog.callDate}"></td>

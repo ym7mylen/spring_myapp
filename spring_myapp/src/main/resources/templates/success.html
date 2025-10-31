@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登録完了</title>
+</head>
+<body>
+    <h1>登録完了</h1>
+
+    <div th:if="${success}" style="color:green">
+        <p th:text="${success}"></p>
+    </div>
+
+    <a href="/register">戻る</a>
+</body>
+</html>
