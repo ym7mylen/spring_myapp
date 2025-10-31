@@ -1,102 +1,171 @@
+//package com.example.demo.model;
+//
+//import java.time.LocalDate;//日付を扱う
+//
+//import jakarta.persistence.Entity;//データベースのテーブルと対応するエンティティクラス
+//import jakarta.persistence.GeneratedValue;//主キーの値を自動生成
+//import jakarta.persistence.GenerationType;//主キー生成戦略を指定
+//import jakarta.persistence.Id;//IDがテーブルの主キーであることを指定
+//import jakarta.persistence.Table;//エンティティをテーブルにマッピング
+//
+//@Entity//データベース上のテーブルと対応するクラス
+//@Table(name = "call_logs")//このクラスが "call_logs" というテーブルにマッピング
+//public class CallLog {
+//    @Id//主キー
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)//データベース側で自動採番される
+//    private Long id;//通話ログのID(主キー)
+//    private Long userId;//通話を行ったユーザーのID
+//    private LocalDate callDate;//通話が行われた日付
+//    private String fileName;//通話録音ファイルの名前
+//    private String filePath;//通話録音ファイルの保存パス
+//    private LocalDate createdAt;//登録日時
+//    private int status;//通話ステータス（0＝未確認、1＝確認済み）
+//    private LocalDate updatedAt;//最終更新日を保存
+//
+//    //ゲッターとセッター
+//    public Long getId() {//idカラムの値を取得
+//        return id;
+//    }
+//
+//    public void setId(Long id) {//idカラムに値を設定
+//        this.id = id;
+//    }
+//
+//    public LocalDate getCallDate() {//callDateカラムの値を取得
+//        return callDate;
+//    }
+//
+//    public void setCallDate(LocalDate callDate) {//callDateカラムに値を設定
+//        this.callDate = callDate;
+//    }
+//
+//    public String getFileName() {//fileNameカラムの値を取得
+//        return fileName;
+//    }
+//
+//    public void setFileName(String fileName) {//fileNameカラムに値を設定
+//        this.fileName = fileName;
+//    }
+//
+//    public String getFilePath() {//filePathカラムの値を取得
+//        return filePath;
+//    }
+//
+//    public void setFilePath(String filePath) {//filePathカラムに値を設定
+//        this.filePath = filePath;
+//    }
+//
+//    public LocalDate getCreatedAt() {//createdAtカラムの値を取得
+//        return createdAt;
+//    }
+//
+//    public void setCreatedAt(LocalDate createdAt) {//createdAtカラムに値を設定
+//        this.createdAt = createdAt;
+//    }
+//
+//    public Long getUserId() {//userIdカラムの値を取得
+//        return userId;
+//    }
+//
+//    public void setUserId(Long userId) {//userIdカラムに値を設定
+//        this.userId = userId;
+//    }
+//
+//    public int getStatus() {//statusカラムの値を取得
+//        return status;
+//    }
+//
+//    public void setStatus(int status) {//statusカラムに値を設定
+//        this.status = status;
+//    }
+//
+//    public LocalDate getUpdatedAt() {//updatedAtカラムの値を取得
+//        return updatedAt;
+//    }
+//
+//    public void setUpdatedAt(LocalDate updatedAt) {//updatedAtカラムに値を設定
+//        this.updatedAt = updatedAt;
+//    }
+//
+//    @Override
+//    public String toString() {//このエンティティを文字列にするときの型を定義
+//        return "CallLog{id=" + id + 
+//               ", userId=" + userId + 
+//               ", callDate='" + callDate + 
+//               "', fileName='" + fileName + 
+//               "', filePath='" + filePath + 
+//               "', createdAt='" + createdAt + 
+//               "', status=" + status + 
+//               ", updatedAt='" + updatedAt + "'}";
+//    }
+//
+//}
 package com.example.demo.model;
 
-import java.time.LocalDate;//日付を扱う
+import java.time.LocalDate;
 
-import jakarta.persistence.Entity;//データベースのテーブルと対応するエンティティクラス
-import jakarta.persistence.GeneratedValue;//主キーの値を自動生成
-import jakarta.persistence.GenerationType;//主キー生成戦略を指定
-import jakarta.persistence.Id;//IDがテーブルの主キーであることを指定
-import jakarta.persistence.Table;//エンティティをテーブルにマッピング
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Entity//データベース上のテーブルと対応するクラス
-@Table(name = "call_logs")//このクラスが "call_logs" というテーブルにマッピング
+@Entity
+@Table(name = "call_logs")
 public class CallLog {
-    @Id//主キー
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//データベース側で自動採番される
-    private Long id;//通話ログのID(主キー)
-    private Long userId;//通話を行ったユーザーのID
-    private LocalDate callDate;//通話が行われた日付
-    private String fileName;//通話録音ファイルの名前
-    private String filePath;//通話録音ファイルの保存パス
-    private LocalDate createdAt;//登録日時
-    private int status;//通話ステータス（0＝未確認、1＝確認済み）
-    private LocalDate updatedAt;//最終更新日を保存
 
-    //ゲッターとセッター
-    public Long getId() {//idカラムの値を取得
-        return id;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
 
-    public void setId(Long id) {//idカラムに値を設定
-        this.id = id;
-    }
+    private Long userId;
 
-    public LocalDate getCallDate() {//callDateカラムの値を取得
-        return callDate;
-    }
+    @Column(nullable = false)
+    private LocalDate callDate;
 
-    public void setCallDate(LocalDate callDate) {//callDateカラムに値を設定
-        this.callDate = callDate;
-    }
+    private String fileName;
 
-    public String getFileName() {//fileNameカラムの値を取得
-        return fileName;
-    }
+    @Column(nullable = false)
+    private String filePath;
 
-    public void setFileName(String fileName) {//fileNameカラムに値を設定
-        this.fileName = fileName;
-    }
+    private LocalDate createdAt;
 
-    public String getFilePath() {//filePathカラムの値を取得
-        return filePath;
-    }
+    private int status; // 0=未確認、1=確認済み
 
-    public void setFilePath(String filePath) {//filePathカラムに値を設定
-        this.filePath = filePath;
-    }
+    private LocalDate updatedAt;
 
-    public LocalDate getCreatedAt() {//createdAtカラムの値を取得
-        return createdAt;
-    }
+    // -------------------- Getter/Setter --------------------
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setCreatedAt(LocalDate createdAt) {//createdAtカラムに値を設定
-        this.createdAt = createdAt;
-    }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
-    public Long getUserId() {//userIdカラムの値を取得
-        return userId;
-    }
+    public LocalDate getCallDate() { return callDate; }
+    public void setCallDate(LocalDate callDate) { this.callDate = callDate; }
 
-    public void setUserId(Long userId) {//userIdカラムに値を設定
-        this.userId = userId;
-    }
+    public String getFileName() { return fileName; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
 
-    public int getStatus() {//statusカラムの値を取得
-        return status;
-    }
+    public String getFilePath() { return filePath; }
+    public void setFilePath(String filePath) { this.filePath = filePath; }
 
-    public void setStatus(int status) {//statusカラムに値を設定
-        this.status = status;
-    }
+    public LocalDate getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt; }
 
-    public LocalDate getUpdatedAt() {//updatedAtカラムの値を取得
-        return updatedAt;
-    }
+    public int getStatus() { return status; }
+    public void setStatus(int status) { this.status = status; }
 
-    public void setUpdatedAt(LocalDate updatedAt) {//updatedAtカラムに値を設定
-        this.updatedAt = updatedAt;
-    }
+    public LocalDate getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDate updatedAt) { this.updatedAt = updatedAt; }
 
     @Override
-    public String toString() {//このエンティティを文字列にするときの型を定義
-        return "CallLog{id=" + id + 
-               ", userId=" + userId + 
-               ", callDate='" + callDate + 
-               "', fileName='" + fileName + 
-               "', filePath='" + filePath + 
-               "', createdAt='" + createdAt + 
-               "', status=" + status + 
-               ", updatedAt='" + updatedAt + "'}";
+    public String toString() {
+        return "CallLog{id=" + id + ", userId=" + userId + ", callDate=" + callDate
+               + ", fileName='" + fileName + "', filePath='" + filePath + "'"
+               + ", createdAt=" + createdAt + ", status=" + status + ", updatedAt=" + updatedAt + "}";
     }
-
 }
+
