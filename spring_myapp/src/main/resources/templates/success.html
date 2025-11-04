@@ -5,12 +5,11 @@
     <title>登録完了</title>
 </head>
 <body>
-    <h1>登録完了</h1>
-
+    <h2>登録完了</h2>
     <div th:if="${success}" style="color:green">
         <p th:text="${success}"></p>
     </div>
-
-    <a href="/register">戻る</a>
+    <a href="/register">新規登録に戻る</a>
+    <a th:href="@{/login}">ログイン画面へ</a>
 </body>
 </html>

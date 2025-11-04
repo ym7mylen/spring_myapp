@@ -13,5 +13,5 @@ public interface CallUserRepository extends JpaRepository<CallUser, Long> {// Ca
 	// save()         → 新規登録・更新
 	// deleteById()   → ID指定で削除
 	// count()        → レコード件数を取得
-
+	CallUser findByUserName(String userName);
 }

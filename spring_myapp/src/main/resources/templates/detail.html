@@ -2,35 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-    <title>Top Page</title>
+    <title>ログ詳細画面</title>
 </head>
 <body>
-<h1>Call Logs</h1>
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>UserID</th>          
-            <th>CallDate</th>
-            <th>FileName</th>
-            <th>FilePath</th>
-            <th>CreatedAt</th>
-            <th>Status</th>
-            <th>UpdatedAt</th>
-        </tr>
-    </thead>
-    <tbody>
-            <tr th:each="callLog : ${callLogs}">
-            <td th:text="${callLog.id}"></td>
-            <td th:text="${callLog.userId}"></td>
-            <td th:text="${callLog.callDate}"></td>
-            <td th:text="${callLog.fileName}"></td>
-            <td th:text="${callLog.filePath}"></td>
-            <td th:text="${callLog.createdAt}"></td>
-            <td th:text="${callLog.status}"></td>
-            <td th:text="${callLog.updatedAt}"></td>
-        </tr>
-    </tbody>
- </table>
+	<div th:replace="fragments/header :: header"></div>
+	<h2>ログ詳細画面</h2>
+	<table border="1">
+    	<thead>
+        	<tr>
+            	<th>ID</th>
+            	<th>UserID</th>          
+            	<th>CallDate</th>
+            	<th>FileName</th>
+            	<th>FilePath</th>
+            	<th>CreatedAt</th>
+            	<th>Status</th>
+            	<th>UpdatedAt</th>
+        	</tr>
+    	</thead>
+    	<tbody>
+            	<tr th:each="callLog : ${callLogs}">
+            	<td th:text="${callLog.id}"></td>
+            	<td th:text="${callLog.userId}"></td>
+            	<td th:text="${callLog.callDate}"></td>
+            	<td th:text="${callLog.fileName}"></td>
+            	<td th:text="${callLog.filePath}"></td>
+            	<td th:text="${callLog.createdAt}"></td>
+            	<td th:text="${callLog.status}"></td>
+            	<td th:text="${callLog.updatedAt}"></td>
+        	</tr>
+    	</tbody>
+ 	</table>
 </body>
 </html>
