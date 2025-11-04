@@ -28,11 +28,11 @@ public class CallUser {
         this.id = id;
     }
 
-    public String getUsername() {//usernameカラムの値を取得
+    public String getUserName() {//usernameカラムの値を取得
         return userName;
     }
 
-    public void setUsername(String userName) {//usernameカラムに値を設定
+    public void setUserName(String userName) {//usernameカラムに値を設定
         this.userName = userName;
     }
 
@@ -54,7 +54,7 @@ public class CallUser {
     
     @Override
     public String toString() {//このエンティティを文字列にするときの型を定義
-        return "CallLog{id=" + id + 
+        return "CallUser{id=" + id + 
                ", userName=" + userName + 
                ", password='" + password + 
                ", role='" + role + "'}";

@@ -5,8 +5,8 @@
     <title>TOP画面</title>
 </head>
 <body>
-    <h1>TOP画面</h1>
-
+	<div th:replace="fragments/header :: header"></div>
+    <h2>コールセンターシステム</h2>
     <!-- アップロードフォーム -->
     <h2>通話ログアップロード</h2>
     <form th:action="@{/upload}" method="post" enctype="multipart/form-data">

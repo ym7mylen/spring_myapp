@@ -1,0 +1,13 @@
+<header th:fragment="header" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div style="float:left;">
+        <span sec:authorize="isAuthenticated()">
+            <b sec:authentication="name"></b>さん
+        </span>
+    </div>
+    <div style="float:right;">
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</header>
+

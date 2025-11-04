@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;//Listを使う
 
 import org.springframework.beans.factory.annotation.Autowired;//自動的に依存関係を入れる
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;//コントローラークラス
 import org.springframework.ui.Model;//コントローラーからビューにデータを渡す
 import org.springframework.web.bind.annotation.GetMapping;// HTTPのGETリクエストを処理
@@ -30,18 +31,34 @@ public class HomeController {
 
     //トップページ（/）にアクセスした時に、top.htmlを表示
     @GetMapping("/detail")//「http://localhost:8080/detail」で実行
-    public String detail(Model model) {//引数の Model は、コントローラーからビューへ値を渡す
-    	 List<CallLog> callLogs = callLogRepository.findAll();//call_logs テーブルの全内容を取得して、callLogsリストに格納
+    public String detail(
+        @RequestParam("startDate") String startDateStr,
+        @RequestParam("endDate") String endDateStr,
+            Model model) {
+//引数の Model は、コントローラーからビューへ値を渡す
+//    	 List<CallLog> callLogs = callLogRepository.findAll();//call_logs テーブルの全内容を取得して、callLogsリストに格納
+//
+//       //取得したデータをモデルに追加してビューに渡す
+//       model.addAttribute("callLogs", callLogs);//Thymeleafテンプレから ${callLogs} として参照可
+//         
+//       System.out.println("CallLogs:");//「CallLogs:」を出力
+//       for (CallLog log : callLogs) {//1件ずつCallLogの内容をコンソールに出力
+//           System.out.println(log);  
+//       }
+//    	
+    	LocalDate startDate = LocalDate.parse(startDateStr);
+        LocalDate endDate = LocalDate.parse(endDateStr);
 
-         //取得したデータをモデルに追加してビューに渡す
-         model.addAttribute("callLogs", callLogs);//Thymeleafテンプレから ${callLogs} として参照可
+        List<CallLog> callLogs = callLogRepository.findByCallDateBetween(startDate, endDate);
          
-         System.out.println("CallLogs:");//「CallLogs:」を出力
-         for (CallLog log : callLogs) {//1件ずつCallLogの内容をコンソールに出力
-             System.out.println(log);  
-         }
-    	
-         return "detail"; //templates/detail.htmlを返す
+        model.addAttribute("callLogs", callLogs);
+
+        System.out.println("===== 10月の通話ログ一覧 =====");
+        for (CallLog log : callLogs) {
+            System.out.println(log);
+        }
+        
+        return "detail"; //templates/detail.htmlを返す
     }
     
 // 登録完了ページ
@@ -50,15 +67,21 @@ public class HomeController {
         return "success"; // success.html
     }
     @GetMapping("/register")
-    public String register(Model model) {
+    public String showRegisterForm(Model model) {
+        model.addAttribute("callUser", new CallUser()); // ← これが必要
         return "register";
-    }    
+    }
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     // 完了メッセージをリダイレクト先に渡す
-    public String registerUser(@ModelAttribute CallUser userId, RedirectAttributes redirectAttributes) {
+    public String registerUser(@ModelAttribute CallUser user, RedirectAttributes redirectAttributes) {
     try {
-        callUserRepository.save(userId);
+    	user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        callUserRepository.save(user);
         redirectAttributes.addFlashAttribute("success", "登録が完了しました！");
         return "redirect:/success";
     } catch (Exception e) {
@@ -67,6 +90,49 @@ public class HomeController {
         return "redirect:/register";
     }
     }
+    
+ // ログイン画面表示（GET）
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login"; // login.html を返す
+    }
+    
+// // ログイン画面表示
+//    @PostMapping("/login")
+//    public String loginUser(
+//        @RequestParam("username") String username,
+//        @RequestParam("password") String password,
+//        Model model,
+//        RedirectAttributes redirectAttributes) {
+//
+//    	// ユーザー名で検索
+//        CallUser user = callUserRepository.findByUserName(username);
+//        if (user != null && user.getPassword().equals(password)) {
+//            redirectAttributes.addFlashAttribute("loginUser", user.getUserName());
+//            return "redirect:/";
+//        } else {
+//            model.addAttribute("error", "ユーザー名またはパスワードが間違っています");
+//            return "login";
+//        }
+//        if (user != null) {
+//            // パスワード比較
+//            if (user.getPassword().equals(password)) {
+//                // 認証成功 → TOP画面へリダイレクト
+//                redirectAttributes.addFlashAttribute("loginUser", user.getUserName());
+//                return "redirect:/";
+//            } else {
+//                // パスワード不一致
+//                model.addAttribute("error", "パスワードが間違っています");
+//                return "login";
+//            }
+//        } else {
+//            // ユーザーが存在しない
+//            model.addAttribute("error", "ユーザー名が存在しません");
+//            return "login";
+//        }
+//        return "login"; // templates/login.html を返す
+//    }
+
     
  // TOP画面表示（アップロードフォーム含む）
     @GetMapping("/")
