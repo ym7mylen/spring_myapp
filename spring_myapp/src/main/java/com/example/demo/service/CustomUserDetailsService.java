@@ -37,6 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .roles("USER") // 必要に応じて変更
                 .build();
     }
+ // 既存ユーザーのハッシュ化
     public void hashExistingPasswords() {
         List<CallUser> users = callUserRepository.findAll();
 
@@ -54,5 +55,14 @@ public class CustomUserDetailsService implements UserDetailsService {
             callUserRepository.save(user);
             System.out.println(user.getUserName() + " のパスワードをハッシュ化しました");
         }
+    }
+    
+   // 新規登録用メソッド
+    public CallUser registerUser(String username, String rawPassword, int role) {
+        CallUser user = new CallUser();
+        user.setUserName(username);
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setRole(String.valueOf(role)); // int → String に変換
+        return callUserRepository.save(user);
     }
 }

@@ -1,0 +1,19 @@
+@charset "UTF-8";
+/* 再生ボタンのスタイル */
+.play-button {
+   padding: 12px 28px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #f5f5f5; /* 文字色 */
+  background: linear-gradient(to bottom, #7b9bef, #5a7fd0); /* 上が明るく下が少し濃い青 */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.15); /* 外側の影 */
+}
+
+/* 音声/動画の非表示 */
+.audio-player {
+    display: none;
+}

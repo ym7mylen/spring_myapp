@@ -3,9 +3,10 @@
 <head>
 	<meta charset="UTF-8">
     <title>ログ詳細画面</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-	<div th:replace="fragments/header :: header"></div>
+	<div th:replace="~{fragments/header :: header}"></div>
 	<h2>ログ詳細画面</h2>
 	<table border="1">
     	<thead>
@@ -18,20 +19,42 @@
             	<th>CreatedAt</th>
             	<th>Status</th>
             	<th>UpdatedAt</th>
+            	<th>Action</th>
         	</tr>
     	</thead>
     	<tbody>
-            	<tr th:each="callLog : ${callLogs}">
-            	<td th:text="${callLog.id}"></td>
-            	<td th:text="${callLog.userId}"></td>
-            	<td th:text="${callLog.callDate}"></td>
-            	<td th:text="${callLog.fileName}"></td>
-            	<td th:text="${callLog.filePath}"></td>
-            	<td th:text="${callLog.createdAt}"></td>
-            	<td th:text="${callLog.status}"></td>
-            	<td th:text="${callLog.updatedAt}"></td>
+            	<tr th:each="log : ${callLogs}">
+            	<td th:text="${log.id}"></td>
+            	<td th:text="${log.userId}"></td>
+            	<td th:text="${log.callDate}"></td>
+            	<td th:text="${log.fileName}"></td>
+            	<td th:text="${log.filePath}"></td>
+            	<td th:text="${log.createdAt}"></td>
+            	<td th:text="${log.status}"></td>
+            	<td th:text="${log.updatedAt}"></td>
+            	<!-- 音声ファイルの再生ボタン -->
+                <td>
+    				<button class="play-button" 
+            			th:onclick="'playVideo(\'video-' + ${log.id} + '\')'">
+       				 再生
+   					</button>
+    				<video th:id="'video-' + ${log.id}" style="display:none;">
+						<source th:src="@{${log.filePath}}" type="video/mp4">
+    				</video>
+    			<!-- その他のファイルや文字列の場合 -->
+    				<span th:if="${#strings.endsWith(log.filePath, '.txt')}" th:text="${log.filePath}"></span>
+				</td>
         	</tr>
     	</tbody>
  	</table>
+ 	<script>
+	function playVideo(videoId) {
+   		const video = document.getElementById(videoId);
+    	if(video) {
+        	video.style.display = 'block'; // videoを表示
+        	video.play();
+    	}
+	}
+	</script>
 </body>
 </html>
