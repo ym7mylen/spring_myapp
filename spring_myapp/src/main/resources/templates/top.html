@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>TOP画面</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-	<div th:replace="fragments/header :: header"></div>
+	<div th:replace="~{fragments/header :: header}"></div>
     <h2>コールセンターシステム</h2>
     <!-- アップロードフォーム -->
     <h2>通話ログアップロード</h2>
@@ -25,9 +26,7 @@
     <div th:if="${error}" style="color:red;">
         <p th:text="${error}"></p>
     </div>
-
     <hr>
-
     <!-- 詳細検索フォーム -->
     <h2>通話ログ詳細</h2>
     <form th:action="@{/detail}" method="get">

@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
     <title>新規登録画面</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <h2>新規登録画面</h2>
@@ -13,7 +14,11 @@
    	 	<label for="password">Password:</label>
     	<input type="password" th:field="*{password}" required /><br /><br />
    		<label for="role">Role:</label>
-    	<input type="text" th:field="*{role}" required /><br /><br />
+    	<select id="role" name="role" required>
+        	<option value="1">一般ユーザー</option>
+        	<option value="2">確認者</option>
+        	<option value="3">管理者</option>
+    	</select><br /><br />
     	<button type="submit">Register</button>
 </form>
 <a href="/login">ログイン</a>
