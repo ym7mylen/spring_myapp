@@ -11,16 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;//自動的に依�
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;//コントローラークラス
 import org.springframework.ui.Model;//コントローラーからビューにデータを渡す
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;// HTTPのGETリクエストを処理
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.model.CallLog;//モデルクラスCallLogをインポート
 import com.example.demo.model.CallUser;
+import com.example.demo.model.LogStatusUpdateRequest;
 import com.example.demo.repository.CallLogRepository;//リポジトリクラスをインポート
 import com.example.demo.repository.CallUserRepository;
 
@@ -42,22 +47,45 @@ public class HomeController {
     public String detail(
         @RequestParam("startDate") String startDateStr,
         @RequestParam("endDate") String endDateStr,
-            Model model) {	
+            Model model,
+            Authentication authentication) {	
     	LocalDate startDate = LocalDate.parse(startDateStr);
         LocalDate endDate = LocalDate.parse(endDateStr);
         List<CallLog> callLogs = callLogRepository.findByCallDateBetween(startDate, endDate);      
         model.addAttribute("callLogs", callLogs);
-//        System.out.println("===== 10月の通話ログ一覧 =====");
-//        for (CallLog log : callLogs) {
-//            System.out.println(log);
-//        }
-     // filePath を確認
+
+     // Spring Security から現在ログイン中のユーザー権限を取得
+        String userRole = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("USER"); // 権限が取れなかった場合のデフォルト
+        model.addAttribute("userRole", userRole);
+        
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isConfirm = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_CONFIRM"));
+        String roles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)  // ROLE_ADMIN, ROLE_CONFIRMなど
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("No roles");
+        
+     // デバッグ出力
+//        System.out.println("===================================================");
+//        System.out.println("ログイン中の権限 = " + userRole);
+//        System.out.println("isAdmin = " + isAdmin);
+//        System.out.println("isConfirm = " + isConfirm);
+//        System.out.println("isAdmin = " + roles);
+//        System.out.println("===================================================");
+
         System.out.println("===== 通話ログ filePath 確認 =====");
         for (CallLog log : callLogs) {
             System.out.println("ID=" + log.getId() + ", fileName=" + log.getFileName() + ", filePath=" + log.getFilePath());
-        } 
-        return "detail"; //templates/detail.htmlを返す
+        }
+
+        return "detail";
     }
+
 // 登録完了ページ
     @GetMapping("/success")
     public String successPage() {
@@ -65,7 +93,7 @@ public class HomeController {
     }
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("callUser", new CallUser()); // ← これが必要
+        model.addAttribute("callUser", new CallUser()); 
         return "register";
     } 
     @Autowired
@@ -121,27 +149,12 @@ public class HomeController {
         String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";
         File uploadFolder = new File(uploadDir);
         if (!uploadFolder.exists()) uploadFolder.mkdirs();       
-//           
-//     //  保存ファイルパス
-//        String filePath = uploadDir + file.getOriginalFilename();
-//        file.transferTo(new File(filePath));
 
      // ファイル保存
         String originalFileName = file.getOriginalFilename();
         File dest = new File(uploadDir + originalFileName);
         file.transferTo(dest);
-        // WEBパスを生成：/logs/YYYY/MM/filename
-//        String webPath = String.format("/logs/%d/%02d/%s",
-//                callDate.getYear(),
-//                callDate.getMonthValue(),
-//                originalFileName);
-//        // CallLog に設定
-//        callLog.setFileName(file.getOriginalFilename());     
-//        callLog.setFilePath("/upload/mp4/" + file.getOriginalFilename());      
-//        callLog.setCreatedAt(LocalDate.now());
-//        callLog.setStatus(0);
-//        callLog.setUserId(currentUser.getId()); // 現在ユーザーに紐付け
-//        System.out.println("保存される filePath = " + callLog.getFilePath());
+        
      // DBにセット
         callLog.setFileName(originalFileName);
         callLog.setFilePath(String.format("/logs/%d/%02d/%s",
@@ -149,7 +162,8 @@ public class HomeController {
                 callDate.getMonthValue(),
                 originalFileName));
         callLog.setCreatedAt(LocalDate.now());
-        callLog.setStatus(0);
+        callLog.setStatusKakunin(0);
+        callLog.setStatusKanri(0);
         callLog.setUserId(currentUser.getId());
         callLogRepository.save(callLog);
         redirectAttributes.addFlashAttribute("success", "ファイルが正常にアップロードされました");
@@ -181,6 +195,49 @@ public class HomeController {
                              @RequestParam("to") String toDate,
                              RedirectAttributes redirectAttributes) {
         // ここで日付範囲をチェックして /detail に渡す処理を書く
+    	
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	
         return "redirect:/detail?from=" + fromDate + "&to=" + toDate;
     }
+    
+    
+    @CrossOrigin(origins = "http://localhost:8080") // リクエスト元を許可
+    @PostMapping("/updateStatus")
+    @ResponseBody
+    public ResponseEntity<String> updateStatus(@RequestBody LogStatusUpdateRequest request) {
+        try {
+            // リクエストからログIDと新しいステータスを取得
+            Long logId = request.getId();
+         // ログIDを使ってログをデータベースから取得
+            CallLog callLog = callLogRepository.findById(logId).orElseThrow(() -> new RuntimeException("ログが見つかりません"));
+
+            // 確認者ステータスが送られてきた場合のみ更新
+            if (request.getStatusKakunin() != null) {
+                callLog.setStatusKakunin(request.getStatusKakunin());
+                
+            }
+
+            // 管理者ステータスが送られてきた場合のみ更新
+            if (request.getStatusKanri() != null) {
+                callLog.setStatusKanri(request.getStatusKanri());
+            }
+//            int newStatus = request.getStatus();
+//
+//            
+//            // 現在のステータスを新しいステータスに更新
+//            callLog.setStatus(newStatus);
+
+            // 更新をデータベースに保存
+            callLogRepository.save(callLog);
+
+            // 更新成功のレスポンスを返す
+            return ResponseEntity.ok("更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 更新失敗のレスポンスを返す
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("更新失敗");
+        }
+    }
+
 }

@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,17 +28,42 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         CallUser user = callUserRepository.findByUserName(username);
-        System.out.println(user);
+        System.out.println("ログインユーザー情報: " + user);
+
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        System.out.println(User.builder().username(user.getUserName()).password(user.getPassword()).roles("USER").build());
-        return User.builder()
-                .username(user.getUserName())
-                .password(user.getPassword()) // DBに保存されているBCrypt済みパスワード
-                .roles("USER") // 必要に応じて変更
-                .build();
+
+        // role を Spring Security 権限名に変換する
+        String roleName;
+        System.out.println("ユーザーroleカラムの実際の値: " + user.getRole());
+
+        try {
+            int roleValue = Integer.parseInt(user.getRole()); // roleがString型なら数値に変換
+            switch (roleValue) {
+                case 3:
+                    roleName = "ROLE_ADMIN"; // 管理者
+                    break;
+                case 2:
+                    roleName = "ROLE_CONFIRM"; // 確認者
+                    break;
+                default:
+                    roleName = "ROLE_USER"; // 一般ユーザー
+            }
+        } catch (NumberFormatException e) {
+            roleName = "USER"; // 念のため
+        }
+        System.out.println(Collections.singleton(new SimpleGrantedAuthority(roleName)));
+
+
+        // Spring SecurityのUserDetailsを返す
+        return new User(
+                user.getUserName(),
+                user.getPassword(),
+                Collections.singleton(new SimpleGrantedAuthority(roleName))
+        );
     }
+    
  // 既存ユーザーのハッシュ化
     public void hashExistingPasswords() {
         List<CallUser> users = callUserRepository.findAll();
