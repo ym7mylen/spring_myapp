@@ -30,7 +30,11 @@ public class CallLog {
 
     private LocalDate createdAt;
 
-    private int status; // 0=未確認、1=確認済み
+    @Column(name = "status_kakunin", nullable = false)
+    private int statusKakunin;  // 0=未確認, 1=確認済（確認者用）
+
+    @Column(name = "status_kanri", nullable = false)
+    private int statusKanri;    // 0=未確認, 1=確認済（管理者用）
 
     private LocalDate updatedAt;
 
@@ -53,16 +57,33 @@ public class CallLog {
     public LocalDate getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDate createdAt) { this.createdAt = createdAt; }
 
-    public int getStatus() { return status; }
-    public void setStatus(int status) { this.status = status; }
+    public int getStatusKakunin() { return statusKakunin; }
+    public void setStatusKakunin(int statusKakunin) { this.statusKakunin = statusKakunin; }
+
+    public int getStatusKanri() { return statusKanri; }
+    public void setStatusKanri(int statusKanri) { this.statusKanri = statusKanri; }
 
     public LocalDate getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDate updatedAt) { this.updatedAt = updatedAt; }
 
+//    @Override
+//    public String toString() {
+//        return "CallLog{id=" + id + ", userId=" + userId + ", callDate=" + callDate
+//               + ", fileName='" + fileName + "', filePath='" + filePath + "'"
+//               + ", createdAt=" + createdAt + ", status=" + status + ", updatedAt=" + updatedAt + "}";
+//    }
     @Override
     public String toString() {
-        return "CallLog{id=" + id + ", userId=" + userId + ", callDate=" + callDate
-               + ", fileName='" + fileName + "', filePath='" + filePath + "'"
-               + ", createdAt=" + createdAt + ", status=" + status + ", updatedAt=" + updatedAt + "}";
+        return "CallLog{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", callDate=" + callDate +
+                ", fileName='" + fileName + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", createdAt=" + createdAt +
+                ", statusKakunin=" + statusKakunin +
+                ", statusKanri=" + statusKanri +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

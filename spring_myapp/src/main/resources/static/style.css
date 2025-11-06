@@ -1,13 +1,15 @@
 @charset "UTF-8";
 /* 再生ボタンのスタイル */
 .play-button {
-   padding: 12px 28px;
+  width: 95px;
+  height: 49px;
+  padding: 6px 12px;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: medium;
   color: #f5f5f5; /* 文字色 */
   background: linear-gradient(to bottom, #7b9bef, #5a7fd0); /* 上が明るく下が少し濃い青 */
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
   box-shadow:
     0 4px 6px rgba(0, 0, 0, 0.15); /* 外側の影 */
@@ -17,3 +19,35 @@
 .audio-player {
     display: none;
 }
+
+.role-btn {
+	width: 95px;
+    height: 49px;
+    padding: 6px 12px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: medium;
+    color: #f5f5f5; /* 文字色 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* ドロップシャドウ */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* 確認者ボタン */
+.confirm-btn {
+    background: linear-gradient(to bottom, #828486, #5f6062);
+}
+
+/* 管理者ボタン */
+.admin-btn {
+    background: linear-gradient(to bottom, #828486, #5f6062);
+}
+
+/* 押下時にグレーアウト */
+.role-btn:disabled {
+    background: #b5b6b7;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
