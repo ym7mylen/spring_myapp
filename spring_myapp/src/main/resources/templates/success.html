@@ -3,14 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>登録完了</title>
+    <!-- Bootstrap CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h2>登録完了</h2>
-    <div th:if="${success}" style="color:green">
-        <p th:text="${success}"></p>
+    <div class="container mt-5" style="max-width: 400px;">
+        <h2 class="text-center mb-4">登録完了</h2>
+
+        <!-- 成功メッセージ -->
+        <div th:if="${success}" class="alert alert-success" role="alert">
+            <p th:text="${success}" class="mb-0"></p>
+        </div>
+
+        <!-- リンクボタン -->
+        <a href="/register" class="back-register-btn">新規登録に戻る</a>
+		<a th:href="@{/login}" class="login-btn-success">ログイン画面へ</a>
     </div>
-    <a href="/register">新規登録に戻る</a>
-    <a th:href="@{/login}">ログイン画面へ</a>
+
+    <!-- Bootstrap JS + Popper.js (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

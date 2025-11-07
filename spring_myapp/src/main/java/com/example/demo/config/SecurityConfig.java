@@ -27,7 +27,7 @@ public class SecurityConfig {
 		System.out.println(http);
 		http
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/register", "/login", "/css/**", "/upload/mp4/**").permitAll()
+				.requestMatchers("/register", "/login", "/style.css/**", "/upload/mp4/**").permitAll()
 				.requestMatchers("/updateStatus").hasAnyRole("ADMIN", "CONFIRM")  // ステータス更新は管理者と確認者だけ許可
 //				.requestMatchers("/updateStatus").authenticated()
 				.anyRequest().authenticated()

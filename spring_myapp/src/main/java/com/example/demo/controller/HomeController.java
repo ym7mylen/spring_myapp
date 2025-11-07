@@ -175,20 +175,43 @@ public class HomeController {
     }
     @GetMapping("/logs/{year}/{month}/{fileName:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(
+    public ResponseEntity<?> serveFile(
             @PathVariable int year,
             @PathVariable int month,
             @PathVariable String fileName) throws IOException {
-        Path file = Paths.get("/Users/yuki/git/spring_myapp/upload/mp4/").resolve(fileName);
-        Resource resource = new UrlResource(file.toUri());
-        if (!resource.exists() || !resource.isReadable()) {
-            return ResponseEntity.notFound().build();
-        }
+ // MP4ファイルの保存ディレクトリ
+    String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";
+
+    // アクセスされたファイルパス
+    Path filePath = Paths.get(uploadDir).resolve(fileName);
+    File file = filePath.toFile();
+
+    // ダミーファイル（存在する場合のみ使う）
+    File dummyFile = new File(uploadDir + "dummy.mp4");
+    //  実際の音声ファイルが存在する場合
+    if (file.exists() && file.canRead()) {
+        Resource resource = new UrlResource(file.toURI());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
                 .body(resource);
     }
+    //  ダミーファイルが存在する場合
+    if (dummyFile.exists() && dummyFile.canRead()) {
+        System.out.println("実ファイルが存在しないため、ダミーファイルを返します: " + dummyFile.getName());
+        Resource resource = new UrlResource(dummyFile.toURI());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + dummyFile.getName() + "\"")
+                .body(resource);
+    }
+    // 実ファイルもダミーファイルも存在しない場合
+    System.out.println("音声ファイルもダミーファイルも存在しません: " + filePath.toString());
+    String message = "(ファイルが存在しません)";
+    return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_TYPE, "text/plain; charset=UTF-8")
+            .body(message);
+	}
     // ログ詳細画面への遷移（期間指定）
     @PostMapping("/detail")
     public String showDetail(@RequestParam("from") String fromDate,
