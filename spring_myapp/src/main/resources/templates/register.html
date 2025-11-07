@@ -11,26 +11,26 @@
 <body>
     <div class="register-bg">
         <div class="register-box">
-            <h2 class="text-center mb-4">新規登録画面</h2>      
+            <h2 class="text-center mb-4">ユーザー登録</h2>      
             <form th:action="@{/register}" method="post" th:object="${callUser}">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <div class="mb-3">
-                    <label for="userName" class="form-label">UserName:</label>
+                    <label for="userName" class="form-label">ユーザー名:</label>
                     <input type="text" th:field="*{userName}" class="form-control" required />
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
+                    <label for="password" class="form-label">パスワード:</label>
                     <input type="password" th:field="*{password}" class="form-control" required />
                 </div>
                 <div class="mb-3">
-                    <label for="role" class="form-label">Role:</label>
+                    <label for="role" class="form-label">役割:</label>
                     <select id="role" name="role" class="form-select" required>
                         <option value="1">一般ユーザー</option>
                         <option value="2">確認者</option>
                         <option value="3">管理者</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-lg register-btn">Register</button>
+                <button type="submit" class="btn btn-lg register-btn">登録</button>
             </form>
             <a href="/login" class="btn btn-link d-block text-center mt-3">ログイン</a>
         </div>
