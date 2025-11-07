@@ -2,126 +2,127 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<meta name="_csrf" th:content="${_csrf.token}">  <!-- CSRFトークンを埋め込む -->
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"> <!-- CSRFヘッダ名を埋め込む -->
+	<meta name="_csrf" th:content="${_csrf.token}">  
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"> 
     <title>ログ詳細画面</title>
+    <!-- Bootstrap CSS (CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-	<div th:replace="~{fragments/header :: header}"></div>
-	<h2>ログ詳細画面</h2>
-	<table border="1">
-    	<thead>
-        	<tr>
-            	<th>ID</th>
-            	<th>UserID</th>          
-            	<th>CallDate</th>
-            	<th>FileName</th>
-            	<th>FilePath</th>
-            	<th>CreatedAt</th>
-            	<th>UpdatedAt</th>
-            	<th>Action</th>
-            	<!-- role=1のとき非表示 -->
-      			<th th:if="${userRole != '1'}">Status</th>
-        	</tr>
-    	</thead>
-    	<tbody>
-           	<tr th:each="log : ${callLogs}">
-            	<td th:text="${log.id}"></td>
-            	<td th:text="${log.userId}"></td>
-            	<td th:text="${log.callDate}"></td>
-            	<td th:text="${log.fileName}"></td>
-            	<td th:text="${log.filePath}"></td>
-            	<td th:text="${log.createdAt}"></td>
-            	<td th:text="${log.updatedAt}"></td>
-           		 <!-- 音声ファイルの再生ボタン -->
-           		 <td>
-    				<button class="play-button" 
-            			th:onclick="'playVideo(\'video-' + ${log.id} + '\')'">
-       					再生
-   					</button>
-    				<video th:id="'video-' + ${log.id}" style="display:none;">
-						<source th:src="@{${log.filePath}}" type="video/mp4">
-    				</video>
-    				<!-- その他のファイルや文字列の場合 -->
-    				<span th:if="${#strings.endsWith(log.filePath, '.txt')}" th:text="${log.filePath}"></span>
-				</td>
-				<!-- roleごとのボタン表示 -->
-      			<!-- Status列をボタンのみ表示 -->
-    			<td>
-        		<!-- 確認者ボタン -->
-				<button th:if="${userRole == 'ROLE_CONFIRM'}"
-       				 class="role-btn confirm-btn"
-        			 th:id="'kakunin-' + ${log.id}"
-        			 th:disabled="${log.statusKakunin == 1}"
-        			 th:classappend="${log.statusKakunin == 1 ? ' disabled' : ''}"
-        			 th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kakunin\')'">
-    				 確認者
-				</button>
-				<!-- 管理者ボタン -->
-				<button th:if="${userRole == 'ROLE_ADMIN'}"
-        			class="role-btn admin-btn"
-        			th:id="'kanri-' + ${log.id}"
-        			th:disabled="${log.statusKanri == 1}"
-        			th:classappend="${log.statusKanri == 1 ? ' disabled' : ''}"
-        			th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kanri\')'">
-    				管理者
-				</button>
-    			</td>
-        	</tr>
-    	</tbody>
- 	</table>
- 	<script>
-	function playVideo(videoId) {
-   		const video = document.getElementById(videoId);
-    	if(video) {
-        	video.style.display = 'block'; // videoを表示
-        	video.play();
-    	}
-	}
-	function toggleStatus(btn, logId, type) {
-		
-    	// ボタンを押下でグレーアウト
-    	btn.disabled = true; // ボタンを一時的に無効化
-    	const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    	const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-    	console.log("csrfToken", csrfToken);
-    	console.log("csrfHeader", csrfHeader);
-   	
-		let bodyData = { id: logId };
-		if (type === 'kakunin') {
-			bodyData.statusKakunin = 1;
-		} else if (type === 'kanri') {
-			bodyData.statusKanri = 1;
-		}
+	<div th:replace="~{fragments/header :: header('ログ詳細画面')}"></div>
+	<div class="container my-4">
+	<h2 class="mb-4">通話ログ詳細</h2>
+	<table class="table table-striped table-hover align-middle">
+    	<thead class="table-dark">
+    <tr>
+        <th>CallDate</th>
+        <th>FileName</th>
+        <!-- 一般ユーザー以外のみ表示 -->
+        <th th:if="${userRole != 'ROLE_USER'}">FilePath</th>
+        <th th:if="${userRole != 'ROLE_USER'}">CreatedAt</th>
+        <th th:if="${userRole != 'ROLE_USER'}">UpdatedAt</th>
+        <th>Action</th>
+        <th th:if="${userRole != 'ROLE_USER'}">Status</th>
+    </tr>
+</thead>
+<tbody>
+    <tr th:each="log : ${callLogs}">
+        <td th:text="${log.callDate}"></td>
+        <td th:text="${log.fileName}"></td>
+        <!-- 一般ユーザー以外のみ表示 -->
+        <td th:if="${userRole != 'ROLE_USER'}" th:text="${log.filePath}"></td>
+        <td th:if="${userRole != 'ROLE_USER'}" th:text="${log.createdAt}"></td>
+        <td th:if="${userRole != 'ROLE_USER'}" th:text="${log.updatedAt}"></td>
 
+        <!-- 再生ボタンやその他 -->
+        <td>
+            <button type="button" class="btn btn-primary btn-sm btn-play"
+                th:onclick="'playVideo(\'video-' + ${log.id} + '\')'">
+                再生
+            </button>
+            <video th:id="'video-' + ${log.id}" style="display:none; max-width: 200px;" controls>
+                <source th:src="@{${log.filePath}}" type="video/mp4">
+            </video>
+            <span th:if="${#strings.endsWith(log.filePath, '.txt')}" th:text="${log.filePath}"></span>
+        </td>
+
+        <!-- roleごとのボタン表示 -->
+        <td>
+            <button th:if="${userRole == 'ROLE_CONFIRM'}"
+                class="btn btn-warning btn-sm btn-role btn-role-confirm"
+                th:id="'kakunin-' + ${log.id}"
+                th:disabled="${log.statusKakunin == 1}"
+                th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kakunin\')'">
+                確認者
+            </button>
+
+            <button th:if="${userRole == 'ROLE_ADMIN'}"
+                class="btn btn-danger btn-sm btn-role btn-role-admin"
+                th:id="'kanri-' + ${log.id}"
+                th:disabled="${log.statusKanri == 1}"
+                th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kanri\')'">
+                管理者
+            </button>
+        </td>
+    </tr>
+</tbody>
+
+</table>
+</div>
+
+	<!-- Bootstrap JS + Popper.js (CDN) -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+	<script>
+		function playVideo(videoId) {
+   			const video = document.getElementById(videoId);
+    		if(video) {
+        		video.style.display = 'block'; // videoを表示
+        		video.play();
+    		}
+		}
+		function toggleStatus(btn, logId, type) {
+    		// ボタンを押下でグレーアウト
+    		btn.disabled = true; // ボタンを一時的に無効化
+    		const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    		const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+    	
+			let bodyData = { id: logId };
+			if (type === 'kakunin') {
+				bodyData.statusKakunin = 1;
+			} else if (type === 'kanri') {
+				bodyData.statusKanri = 1;
+			}
  	
-    	// ここでAJAX等でサーバー側のstatusを0→1に更新
-    	fetch('/updateStatus', {
-        	method: 'POST',
-        	headers: {
-            	'Content-Type': 'application/json',
-        		[csrfHeader]: csrfToken
-        	},
-        	credentials: 'same-origin',
-        	body: JSON.stringify(bodyData)
-    	}).then(res => {
-        	if(res.ok){
-				console.log("aaaa");
-            	alert('更新成功');
-            	btn.disabled = true;
-				btn.classList.add('disabled');		
-        	} else {
-				console.log("bbbb");
-            	alert('更新失敗');
-            	btn.disabled = false;
-        	}
-    	}).catch(err => {
-        	console.error('Error:', err);
-			alert('通信エラー');
-			btn.disabled = false;
-    	});
-	}
+    		// ここでAJAX等でサーバー側のstatusを0→1に更新
+    		fetch('/updateStatus', {
+        		method: 'POST',
+        		headers: {
+            		'Content-Type': 'application/json',
+        			[csrfHeader]: csrfToken
+        		},
+        		credentials: 'same-origin',
+        		body: JSON.stringify(bodyData)
+    		}).then(res => {
+        		if(res.ok){
+            		alert('更新成功');
+            		btn.disabled = true;
+					btn.classList.add('disabled');		
+        		} else {
+            		alert('更新失敗');
+            		btn.disabled = false;
+        		}
+    		}).catch(err => {
+        		console.error('Error:', err);
+				alert('通信エラー');
+				btn.disabled = false;
+    		});
+		}
 	</script>
+	<!-- Bootstrap JS + Popper.js (CDN) -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

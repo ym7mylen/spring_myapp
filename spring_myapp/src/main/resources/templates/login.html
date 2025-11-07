@@ -1,27 +1,33 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">	
-    <title>ログイン画面</title>
-    <link rel="stylesheet" href="/style.css">
-</head>
 <body>
-    <h2>ログイン画面</h2>
-    <form th:action="@{/login}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required /><br /><br />
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required /><br /><br />
-        <button type="submit">Login</button>
-    </form>
-	<!-- ログイン失敗時 -->
-	<div th:if="${param.error}" style="color:red;">
-    ユーザー名またはパスワードが間違っています
-	</div>
-	<!-- ログアウト完了時 -->
-	<div th:if="${param.logout}" style="color:green;">
-    ログアウトしました
-	</div>
-	<a href="/register">新規登録に戻る</a>
+    <div class="login-bg">
+        <div class="login-box mx-auto">
+            <h2 class="mb-4 text-center">ログイン画面</h2>
+
+            <!-- メッセージ表示 -->
+            <div class="mb-3">
+                <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                    ユーザー名またはパスワードが間違っています
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                    ログアウトしました
+                </div>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" id="username" name="username" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" id="password" name="password" class="form-control" required />
+                </div>
+                <button type="submit" class="btn login-btn w-100">Login</button>
+            </form>
+
+            <div class="mt-3 text-center">
+                <a href="/register" class="btn btn-link">新規登録に戻る</a>
+            </div>
+        </div>
+    </div>
 </body>
-</html>
