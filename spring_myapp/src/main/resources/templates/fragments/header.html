@@ -1,24 +1,17 @@
 <header th:fragment="header(title)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar custom-header shadow-sm position-relative">
-        
-        <!-- 左側: ユーザー名 -->
         <div class="header-left" sec:authorize="isAuthenticated()">
             <span>
                 <b sec:authentication="name"></b> さん
             </span>
         </div>
-
-        <!-- 中央: システム名 -->
         <div class="header-center">
             <h1 class="system-title" th:text="${title}">コールセンターシステム</h1>
         </div>
-
-        <!-- 右側: ログアウトボタン -->
         <div class="header-right" sec:authorize="isAuthenticated()">
             <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn btn-outline-light btn-sm logout-btn">Logout</button>
+                <button type="submit" class="btn btn-outline-light btn-sm logout-btn">ログアウト</button>
             </form>
-        </div>
-        
+        </div>       
     </nav>
 </header>

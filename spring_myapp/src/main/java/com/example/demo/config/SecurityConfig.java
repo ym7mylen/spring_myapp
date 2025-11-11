@@ -19,23 +19,21 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.csrf(csrf -> csrf
-                .requireCsrfProtectionMatcher(request -> {
-                    // CSRF保護が必要なリクエストの条件を指定
+                .requireCsrfProtectionMatcher(request -> { // CSRF保護が必要なリクエストの条件を指定
                     return "POST".equals(request.getMethod()) || "PUT".equals(request.getMethod()) || "DELETE".equals(request.getMethod());
                 })
             );
 		System.out.println(http);
 		http
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/register", "/login", "/style.css/**", "/upload/mp4/**").permitAll()
+				.requestMatchers("/register", "/login", "/success","/style.css/**", "/upload/mp4/**").permitAll()
 				.requestMatchers("/updateStatus").hasAnyRole("ADMIN", "CONFIRM")  // ステータス更新は管理者と確認者だけ許可
-//				.requestMatchers("/updateStatus").authenticated()
 				.anyRequest().authenticated()
 			)
 			.formLogin(form -> form
 				.loginPage("/login")
 				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/", true)    // ログイン成功後にTOP画面へ
+				.defaultSuccessUrl("/", true)// ログイン成功後にTOP画面へ
 				.failureUrl("/login?error=true")
 				.permitAll()
 			)
@@ -45,8 +43,9 @@ public class SecurityConfig {
 			);
 		return http.build();
     	}
+	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() {// パスワード暗号化
 		return new BCryptPasswordEncoder();
 	}
 }

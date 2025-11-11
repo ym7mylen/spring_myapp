@@ -1,17 +1,13 @@
 package com.example.demo.model;
 
 public class LogStatusUpdateRequest {
-    private Long id;      // 通話ログID
-    private Integer statusKakunin;
+    private Long id;// 通話ログID
+    private Integer statusKakunin;// 確認者用ステータス（0=未確認, 1=確認済）
 
-    // 管理者用ステータス（0=未確認, 1=確認済）
-    private Integer statusKanri;
+    private Integer statusKanri;// 管理者用ステータス（0=未確認, 1=確認済）
 
+    public LogStatusUpdateRequest() {}//以下は各カラムの値を取得、カラムに値を設定
 
-    // デフォルトコンストラクタ（必要に応じて追加）
-    public LogStatusUpdateRequest() {}
-
-    // ゲッターとセッター
     public Long getId() {
         return id;
     }
@@ -37,7 +33,7 @@ public class LogStatusUpdateRequest {
     }
 
     @Override
-    public String toString() {
+    public String toString() {//文字列にする時の型を定義
         return "LogStatusUpdateRequest{" +
                 "id=" + id +
                 ", statusKakunin=" + statusKakunin +

@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-/* ページ全体の文字色を統一 */
 body {
     color: #565353;
     margin: 0;
@@ -11,26 +10,31 @@ body {
     color: #565353;
 }
 
-/* 背景 */
+/* ===============================
+  　　　　　　新規登録画面
+=============================== */
 .register-bg {
     background: #ebebec;
     min-height: 100%;
     display: flex;
     justify-content: center; 
     padding-top: 48px;     
+    align-items: flex-start;
 }
 
-/* 中央ボックス */
 .register-box {
     width: 400px;
     background: #f5f5f5;
     border-radius: 20px;
-    padding: 48px 48px; 
+    padding: 48px 48px ; 
     box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
+.register-box h2 {
+    font-size: 24px;
+    font-weight: 500;
+}
 
-/* Registerボタン用スタイル */
 .register-btn {
 	width: 100%;
     color: #f5f5f5 !important; 
@@ -51,7 +55,31 @@ body {
         inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
-/* 新規登録に戻るボタン */
+/* ===============================
+   　　　　　登録完了画面
+=============================== */
+.success-bg {
+    background: #ebebec;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+    padding-top: 48px;
+}
+
+.success-box {
+    width: 400px;
+    background: #f5f5f5;
+    border-radius: 20px;
+    padding: 48px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.success-box h2 {
+	font-size: 24px;
+    font-weight: 500;
+}
+
 .back-register-btn {
     width: 100%;
     color: #f5f5f5 !important;
@@ -66,26 +94,24 @@ body {
     border: none;
     border-radius: 5px;
     display: block;
-    margin-bottom: 10px;
-    display: block;
     transition: all 0.2s ease;
+    margin-bottom: 10px;
 }
 
 .back-register-btn:hover {
-    transform: translateY(-2px); 
-    box-shadow: 
-        0 6px 12px rgba(0,0,0,0.25),       
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 12px rgba(0,0,0,0.25),
         inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
-/* ログイン画面へボタン */
 .login-btn-success {
     width: 100%;
     color: #f5f5f5 !important;
     background: linear-gradient(145deg, #7b9bef, #5a7fd0) !important;
-    box-shadow: 
-        0 2px 6px rgba(0,0,0,0.2),     
-        inset 0 1px 0 rgba(255,255,255,0.2); 
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.2);
     text-align: center;
     font-weight: 500;
     height: 50px;
@@ -98,13 +124,14 @@ body {
 
 .login-btn-success:hover {
     transform: translateY(-2px);
-    box-shadow: 
-        0 6px 12px rgba(0,0,0,0.2),
+    box-shadow:
+        0 6px 12px rgba(0,0,0,0.25),
         inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
-/* Login */
-/* ページ背景 */
+/* ===============================
+  　　　　　　ログイン画面
+=============================== */
 body, .login-bg {
     background: #ebebec;
     height: 100%;
@@ -112,24 +139,24 @@ body, .login-bg {
     padding: 0;
 }
 
-/* 中央ボックス */
 .login-box {
     width: 400px;
     background: #f5f5f5;
     border-radius: 20px;
-    padding-top: 64px;
-    padding-bottom: 64px;
     box-shadow: 0 6px 12px rgba(0,0,0,0.1);
     padding: 48px 48px; 
 }
 
-/* フォント色統一 */
+.login-box h2 {
+	font-size: 24px;
+    font-weight: 500;
+}
+
 .login-box label,
 .login-box input {
     color: #565353;
 }
 
-/* ログインボタン */
 .login-btn {
     width: 100%;
     height: 50px; 
@@ -153,9 +180,8 @@ body, .login-bg {
 }
 
 /* ===============================
-   Header デザイン (%指定版)
+   　　　　　　ヘッダー
 =============================== */
-
 .custom-header {
     background: #717275 !important;
     height: 100px;
@@ -163,7 +189,6 @@ body, .login-bg {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);  
 }
 
-/* 左側（名前）→ 左端から10%の位置 */
 .header-left {
     position: absolute;
     left: 8.3%;
@@ -173,7 +198,6 @@ body, .login-bg {
     font-weight: 500;
 }
 
-/* 中央（システム名）→ 常に中央 */
 .header-center {
     position: absolute;
     left: 50%;
@@ -189,7 +213,6 @@ body, .login-bg {
     margin: 0;
 }
 
-/* 右側（ログアウトボタン）→ 右端から10%の位置 */
 .header-right {
     position: absolute;
     right: 8.3%;
@@ -197,10 +220,9 @@ body, .login-bg {
     transform: translateY(-50%);
 }
 
-/* ログアウトボタン */
 .logout-btn {
-   color: #717275 !important; /* 文字色 */
-    background: linear-gradient(145deg, #f5f5f5, #e0e0e0) !important; /* グラデーション */
+   color: #717275 !important;
+    background: linear-gradient(145deg, #f5f5f5, #e0e0e0) !important;
     box-shadow: 
         0 2px 6px rgba(0,0,0,0.2), 
         inset 0 1px 0 rgba(255,255,255,0.2); 
@@ -211,9 +233,128 @@ body, .login-bg {
     transition: all 0.2s ease;
 }
 
-/* 再生ボタン */
+/* ===============================
+   　　　　　　TOP画面
+=============================== */
+.top-bg {
+    background: #ebebec;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 48px;     
+    padding-bottom: 48px;
+}
+
+.top-box {
+    width: 400px;
+    background: #f5f5f5;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.top-box h2 {
+	font-size: 24px;
+    font-weight: 500;
+}
+
+.top-box .form-control {
+    color: #565353;
+}
+
+.upload-btn {
+    width: 100%;
+    height: 50px;
+    color: #f5f5f5 !important;
+    background: linear-gradient(145deg, #7b9bef, #5a7fd0) !important;
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-align: center;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+}
+
+.upload-btn:hover {
+    background: linear-gradient(145deg, #7b9bef, #5a7fd0) !important;
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: none;
+}
+
+.footer {
+    background: #ebebec;
+    color: rgba(86, 83, 83, 0.8); 
+    text-align: center;
+    padding: 20px 0; 
+    margin-top: 0;
+    font-size: 0.9rem;
+}
+
+/* ===============================
+   　　　　　ログ詳細画面
+=============================== */
+body, html {
+    height: 100%;
+}
+
+.detail-bg {
+    background: #ebebec;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 48px 8.3%;
+}
+
+.detail-box {
+    width: 100%;
+    background: #f5f5f5 !important;
+    border-radius: 20px;
+    padding: 48px 20px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.detail-box h2 {
+    font-size: 24px !important;
+    font-weight: 500;
+    text-align: center;
+    color: #565353;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ccc;
+    padding: 12px;
+    text-align: left;
+    color: #565353;
+    background: none; 
+}
+
+.table thead th {
+    background: none;
+    font-weight: 600;
+}
+
+.table tbody tr:nth-child(even),
+.table tbody tr:nth-child(odd) {
+    background: none;
+}
+
+.table tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
 .btn-play {
-  width: 95px;
+  width: 80px;
   height: 49px;
   font-size: 20px;
   font-weight: 500;
@@ -227,14 +368,15 @@ body, .login-bg {
         inset 0 1px 0 rgba(255,255,255,0.2); 
 }
 
-/* 動画・音声の非表示 */
 .audio-player {
     display: none;
 }
+.video {
+    display: none;
+}
 
-/* 役割ボタン 共通上書き */
 .btn-role {
-    width: 95px;
+    width: 80px;
     height: 49px;
     font-size: 20px;
     font-weight: 500;
@@ -246,24 +388,30 @@ body, .login-bg {
         inset 0 1px 0 rgba(255,255,255,0.2); 
     cursor: pointer;
     transition: background-color 0.2s ease;
+    margin-right: 4px;
 }
 
-/* 確認者ボタン */
 .btn-role-confirm {
     background: linear-gradient(145deg, #7f8284, #666769) !important;
     color: #fff !important;
 }
 
-/* 管理者ボタン */
 .btn-role-admin {
     background: linear-gradient(to bottom, #7f8284, #666769) !important;
     color: #fff !important;
 }
 
-/* 押下時にグレーアウト */
 .btn-role:disabled,
 .btn-play:disabled {
     background: #b5b6b7 !important;
     cursor: not-allowed;
     box-shadow: none;
+}
+
+.footer {
+    background: #ebebec;
+    color: rgba(86, 83, 83, 0.8);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9rem;
 }
