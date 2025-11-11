@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.List;//Listを使う
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;//自動的に依存関係を入れる
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -17,10 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;//コントローラークラス
-import org.springframework.ui.Model;//コントローラーからビューにデータを渡す
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;// HTTPのGETリクエストを処理
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,237 +30,220 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.model.CallLog;//モデルクラスCallLogをインポート
+import com.example.demo.model.CallLog;
 import com.example.demo.model.CallUser;
 import com.example.demo.model.LogStatusUpdateRequest;
-import com.example.demo.repository.CallLogRepository;//リポジトリクラスをインポート
+import com.example.demo.repository.CallLogRepository;
 import com.example.demo.repository.CallUserRepository;
 
 @Controller
 public class HomeController {
-    @Autowired//自動的に依存関係を入れる
-    private CallLogRepository callLogRepository; 
+
     @Autowired
-    private CallUserRepository callUserRepository;
-    //トップページ（/）にアクセスした時に、top.htmlを表示
-    @GetMapping("/detail")//「http://localhost:8080/detail」で実行
-    public String detail(
-        @RequestParam("startDate") String startDateStr,
-        @RequestParam("endDate") String endDateStr,
-            Model model,
-            Authentication authentication) {	
-    	LocalDate startDate = LocalDate.parse(startDateStr);
-        LocalDate endDate = LocalDate.parse(endDateStr);
-        List<CallLog> callLogs = callLogRepository.findByCallDateBetween(startDate, endDate);      
-        model.addAttribute("callLogs", callLogs);
+    private CallLogRepository callLogRepository;// 通話ログ用のデータ操作リポジトリ
 
-     // Spring Security から現在ログイン中のユーザー権限を取得
-        String userRole = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .findFirst()
-                .orElse("USER"); // 権限が取れなかった場合のデフォルト
-        model.addAttribute("userRole", userRole);
-        
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-        boolean isConfirm = authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_CONFIRM"));
-        String roles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)  // ROLE_ADMIN, ROLE_CONFIRMなど
-                .reduce((a, b) -> a + ", " + b)
-                .orElse("No roles");
-        
-     // デバッグ出力
-//        System.out.println("===================================================");
-//        System.out.println("ログイン中の権限 = " + userRole);
-//        System.out.println("isAdmin = " + isAdmin);
-//        System.out.println("isConfirm = " + isConfirm);
-//        System.out.println("isAdmin = " + roles);
-//        System.out.println("===================================================");
+    @Autowired
+    private CallUserRepository callUserRepository;// ユーザー情報用のデータ操作リポジトリ
 
-        System.out.println("===== 通話ログ filePath 確認 =====");
-        for (CallLog log : callLogs) {
-            System.out.println("ID=" + log.getId() + ", fileName=" + log.getFileName() + ", filePath=" + log.getFilePath());
-        }
+    @Autowired
+    private PasswordEncoder passwordEncoder;// パスワード暗号化用
 
-        return "detail";
+    // ===============================
+    // 　　　　　　新規登録画面
+    // ===============================
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {// 新規登録フォーム用に空のCallUserオブジェクトをモデルに設定
+        model.addAttribute("callUser", new CallUser());
+        return "register";
     }
 
-// 登録完了ページ
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute CallUser user, RedirectAttributes redirectAttributes) {
+        try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));// 入力パスワードを暗号化してセット
+            callUserRepository.save(user);// データベースに保存
+            redirectAttributes.addFlashAttribute("success", "登録が完了しました！");// 登録成功メッセージをリダイレクト先に渡す
+            return "redirect:/success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "登録に失敗しました。");// 登録失敗時メッセージ
+            return "redirect:/register";
+        }
+    }
+    
+    // ===============================
+    // 　　　　　　登録完了画面
+    // ===============================
     @GetMapping("/success")
     public String successPage() {
-        return "success"; // success.html
+        return "success";
     }
-    @GetMapping("/register")
-    public String showRegisterForm(Model model) {
-        model.addAttribute("callUser", new CallUser()); 
-        return "register";
-    } 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @PostMapping("/register")
-    // 完了メッセージをリダイレクト先に渡す
-    public String registerUser(@ModelAttribute CallUser user, RedirectAttributes redirectAttributes) {
-    try {
-    	user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        callUserRepository.save(user);
-        redirectAttributes.addFlashAttribute("success", "登録が完了しました！");
-        return "redirect:/success";
-    } catch (Exception e) {
-        e.printStackTrace();
-        redirectAttributes.addFlashAttribute("error", "登録に失敗しました。");
-        return "redirect:/register";
-    }
-    }
- // ログイン画面表示（GET）
+    // ===============================
+    // 　　　　　　ログイン画面
+    // ===============================
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; // login.html を返す
+        return "login";
     }
- // TOP画面表示（アップロードフォーム含む）
+
+    // ===============================
+    // 　　　　　　 top画面
+    // ===============================
     @GetMapping("/")
-    public String topPage(Model model) {
-        model.addAttribute("callLog", new CallLog()); // フォーム用
+    public String topPage(Model model) {// フォーム用に空のCallLogオブジェクトをセット
+        model.addAttribute("callLog", new CallLog());
         return "top";
     }
-    // 通話ログアップロード処理
+
+    // ===============================
+    // 　　　　通話ログアップロード
+    // ===============================
     @PostMapping("/upload")
     public String uploadCallLog(
-        @ModelAttribute CallLog callLog,
-        @RequestParam("file") MultipartFile file,
-        RedirectAttributes redirectAttributes) {
-    if (file.isEmpty()) {
-        redirectAttributes.addFlashAttribute("error", "ファイルを選択してください");
-        return "redirect:/";
+            @ModelAttribute CallLog callLog,// フォームからの通話ログ情報
+            @RequestParam("file") MultipartFile file,// アップロードファイル
+            RedirectAttributes redirectAttributes) {
+        if (file.isEmpty()) {// ファイル未選択時の表示
+            redirectAttributes.addFlashAttribute("error", "ファイルを選択してください");
+            return "redirect:/";
         }
 
-    try {
-    	// 現在ログインしているユーザー取得
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName(); // ユーザー名
-        CallUser currentUser = callUserRepository.findByUserName(username);
-
-     // callDate を取得（フォームから入る場合）
-        LocalDate callDate = callLog.getCallDate();
-        if (callDate == null) callDate = LocalDate.now(); // なければ今日
-
-        // 保存先ディレクトリ（プロジェクト直下）
-        String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";
-        File uploadFolder = new File(uploadDir);
-        if (!uploadFolder.exists()) uploadFolder.mkdirs();       
-
-     // ファイル保存
-        String originalFileName = file.getOriginalFilename();
-        File dest = new File(uploadDir + originalFileName);
-        file.transferTo(dest);
-        
-     // DBにセット
-        callLog.setFileName(originalFileName);
-        callLog.setFilePath(String.format("/logs/%d/%02d/%s",
-        		callDate.getYear(),
-                callDate.getMonthValue(),
-                originalFileName));
-        callLog.setCreatedAt(LocalDate.now());
-        callLog.setStatusKakunin(0);
-        callLog.setStatusKanri(0);
-        callLog.setUserId(currentUser.getId());
-        callLogRepository.save(callLog);
-        redirectAttributes.addFlashAttribute("success", "ファイルが正常にアップロードされました");
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();// 現在ログイン中のユーザー情報を取得
+            String username = auth.getName();
+            CallUser currentUser = callUserRepository.findByUserName(username);
+            LocalDate callDate = callLog.getCallDate();// 通話日付がフォームに無い場合は本日の日付を使用
+            if (callDate == null) callDate = LocalDate.now();
+            String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";// アップロード先ディレクトリを作成
+            File uploadFolder = new File(uploadDir);
+            if (!uploadFolder.exists()) uploadFolder.mkdirs();
+            String originalFileName = file.getOriginalFilename();// ファイルを保存
+            File dest = new File(uploadDir + originalFileName);
+            file.transferTo(dest);
+            callLog.setFileName(originalFileName);// DB保存用のパス設定
+            callLog.setFilePath(String.format("/logs/%d/%02d/%s",
+                    callDate.getYear(),
+                    callDate.getMonthValue(),
+                    originalFileName));
+            callLog.setCreatedAt(LocalDate.now());
+            callLog.setStatusKakunin(0);// 確認者ステータス初期化
+            callLog.setStatusKanri(0);// 管理者ステータス初期化
+            callLog.setUserId(currentUser.getId());// 作成者IDセット
+            callLogRepository.save(callLog);// DBに保存
+            redirectAttributes.addFlashAttribute("success", "ファイルが正常にアップロードされました");
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "ファイル保存に失敗しました");
         }
         return "redirect:/";
     }
+
+    // ===============================
+    // 指定表示期間の音声ファイル表示・確認
+    // ===============================
     @GetMapping("/logs/{year}/{month}/{fileName:.+}")
     @ResponseBody
     public ResponseEntity<?> serveFile(
             @PathVariable int year,
             @PathVariable int month,
             @PathVariable String fileName) throws IOException {
- // MP4ファイルの保存ディレクトリ
-    String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";
+        String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";// MP4ファイル保存ディレクトリ
+        Path filePath = Paths.get(uploadDir).resolve(fileName);
+        File file = filePath.toFile();
+        File dummyFile = new File(uploadDir + "dummy.mp4");
+        if (file.exists() && file.canRead()) {// 実ファイルが存在する場合は返す
+            Resource resource = new UrlResource(file.toURI());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
+                    .body(resource);
+        }
+        if (dummyFile.exists() && dummyFile.canRead()) {// 実ファイルが存在しない場合、ダミーファイルを返却
+            System.out.println("実ファイルが存在しないため、ダミーファイルを返します: " + dummyFile.getName());
+            Resource resource = new UrlResource(dummyFile.toURI());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + dummyFile.getName() + "\"")
+                    .body(resource);
+        }
+        System.out.println("音声ファイルもダミーファイルも存在しません: " + filePath.toString());// 実ファイルもダミーファイルも存在しない場合
 
-    // アクセスされたファイルパス
-    Path filePath = Paths.get(uploadDir).resolve(fileName);
-    File file = filePath.toFile();
+        String message = "(ファイルが存在しません)";
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "text/plain; charset=UTF-8")
+                .body(message);
+    }
 
-    // ダミーファイル（存在する場合のみ使う）
-    File dummyFile = new File(uploadDir + "dummy.mp4");
-    //  実際の音声ファイルが存在する場合
-    if (file.exists() && file.canRead()) {
-        Resource resource = new UrlResource(file.toURI());
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
-                .body(resource);
+    // ===============================
+    // 　　　　　　ログ詳細画面
+    // ===============================
+    @GetMapping("/detail")
+    public String detail(
+            @RequestParam("startDate") String startDateStr,
+            @RequestParam("endDate") String endDateStr,
+            Model model,
+            Authentication authentication) {
+        LocalDate startDate = LocalDate.parse(startDateStr); //　文字列日付をLocalDateに変換
+        LocalDate endDate = LocalDate.parse(endDateStr);
+        List<CallLog> callLogs = callLogRepository.findByCallDateBetween(startDate, endDate);// 指定期間の通話ログをDBから取得
+        model.addAttribute("callLogs", callLogs);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        String userRole = authentication.getAuthorities().stream()// ログインユーザーの権限取得
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("USER");
+        model.addAttribute("userRole", userRole);
+        boolean isAdmin = authentication.getAuthorities().stream()// ログインユーザーが管理者か確認者かを判定
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isConfirm = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_CONFIRM"));
+        String roles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("No roles");
+        
+        System.out.println("===== 通話ログ filePath 確認 =====");// デバッグ用：ログID・ファイル名・パスを出力
+        for (CallLog log : callLogs) {
+            System.out.println("ID=" + log.getId() + ", fileName=" + log.getFileName() + ", filePath=" + log.getFilePath());
+        }
+        return "detail";
     }
-    //  ダミーファイルが存在する場合
-    if (dummyFile.exists() && dummyFile.canRead()) {
-        System.out.println("実ファイルが存在しないため、ダミーファイルを返します: " + dummyFile.getName());
-        Resource resource = new UrlResource(dummyFile.toURI());
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "video/mp4")
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + dummyFile.getName() + "\"")
-                .body(resource);
-    }
-    // 実ファイルもダミーファイルも存在しない場合
-    System.out.println("音声ファイルもダミーファイルも存在しません: " + filePath.toString());
-    String message = "(ファイルが存在しません)";
-    return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_TYPE, "text/plain; charset=UTF-8")
-            .body(message);
-	}
-    // ログ詳細画面への遷移（期間指定）
+
+ // ===============================
+ // 　　 期間指定でログ詳細画面遷移
+ // ===============================
     @PostMapping("/detail")
     public String showDetail(@RequestParam("from") String fromDate,
                              @RequestParam("to") String toDate,
                              RedirectAttributes redirectAttributes) {
-        // ここで日付範囲をチェックして /detail に渡す処理を書く
-    	
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();// 日付パラメータをGETに変換して/detailにリダイレクト
         return "redirect:/detail?from=" + fromDate + "&to=" + toDate;
     }
-    
-    
-    @CrossOrigin(origins = "http://localhost:8080") // リクエスト元を許可
+
+    // ===============================
+    // 　　　ログ確認・管理ボタン更新
+    // ===============================
+    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/updateStatus")
     @ResponseBody
-    public ResponseEntity<String> updateStatus(@RequestBody LogStatusUpdateRequest request) {
+    public ResponseEntity<String> updateStatus(@RequestBody LogStatusUpdateRequest request) {// CORS許可(あるドメインから別のドメインのサーバーにアクセスしてデータ取得すること)
         try {
-            // リクエストからログIDと新しいステータスを取得
             Long logId = request.getId();
-         // ログIDを使ってログをデータベースから取得
-            CallLog callLog = callLogRepository.findById(logId).orElseThrow(() -> new RuntimeException("ログが見つかりません"));
-
-            // 確認者ステータスが送られてきた場合のみ更新
+            CallLog callLog = callLogRepository.findById(logId)
+                    .orElseThrow(() -> new RuntimeException("ログが見つかりません"));// ステータスが送信されている場合のみ更新
             if (request.getStatusKakunin() != null) {
                 callLog.setStatusKakunin(request.getStatusKakunin());
-                
             }
-
-            // 管理者ステータスが送られてきた場合のみ更新
             if (request.getStatusKanri() != null) {
                 callLog.setStatusKanri(request.getStatusKanri());
             }
-//            int newStatus = request.getStatus();
-//
-//            
-//            // 現在のステータスを新しいステータスに更新
-//            callLog.setStatus(newStatus);
-
-            // 更新をデータベースに保存
-            callLogRepository.save(callLog);
-
-            // 更新成功のレスポンスを返す
+            callLogRepository.save(callLog);// 更新内容をDBに保存
             return ResponseEntity.ok("更新成功");
         } catch (Exception e) {
             e.printStackTrace();
-            // 更新失敗のレスポンスを返す
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("更新失敗");
         }
     }
-
 }

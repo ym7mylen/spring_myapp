@@ -13,33 +13,31 @@ import jakarta.persistence.Table;
 @Table(name = "call_logs")
 public class CallLog {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
+    @Id//テーブルの主キー
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//IDを自動採番する設定(MySQLで)
+    private Long id;//id
 
-    private Long userId;
-
-    @Column(nullable = false)
-    private LocalDate callDate;
-
-    private String fileName;
+    private Long userId;//ユーザーid
 
     @Column(nullable = false)
-    private String filePath;
+    private LocalDate callDate;//電話した日
 
-    private LocalDate createdAt;
+    private String fileName;//ファイル名
+
+    @Column(nullable = false)
+    private String filePath;//ファイルパス
+
+    private LocalDate createdAt;//作成日
 
     @Column(name = "status_kakunin", nullable = false)
-    private int statusKakunin;  // 0=未確認, 1=確認済（確認者用）
+    private int statusKakunin;  // 0=未確認, 1=確認済（確認者用ステータス）
 
     @Column(name = "status_kanri", nullable = false)
-    private int statusKanri;    // 0=未確認, 1=確認済（管理者用）
+    private int statusKanri;    // 0=未確認, 1=確認済（管理者用ステータス）
 
-    private LocalDate updatedAt;
+    private LocalDate updatedAt;//更新日
 
-    // -------------------- Getter/Setter --------------------
-    public Long getId() { return id; }
+    public Long getId() { return id; }//以下は各カラムの値を取得、カラムに値を設定
     public void setId(Long id) { this.id = id; }
 
     public Long getUserId() { return userId; }
@@ -65,15 +63,9 @@ public class CallLog {
 
     public LocalDate getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDate updatedAt) { this.updatedAt = updatedAt; }
-
-//    @Override
-//    public String toString() {
-//        return "CallLog{id=" + id + ", userId=" + userId + ", callDate=" + callDate
-//               + ", fileName='" + fileName + "', filePath='" + filePath + "'"
-//               + ", createdAt=" + createdAt + ", status=" + status + ", updatedAt=" + updatedAt + "}";
-//    }
+    
     @Override
-    public String toString() {
+    public String toString() {//文字列にするときの型を定義
         return "CallLog{" +
                 "id=" + id +
                 ", userId=" + userId +

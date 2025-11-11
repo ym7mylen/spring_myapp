@@ -11,7 +11,6 @@ public class SpringMyappApplication {
 
 	@Autowired
     private CustomUserDetailsService customUserDetailsService; // ← サービスをDI
-
 	public static void main(String[] args) {
 		SpringApplication.run(SpringMyappApplication.class, args);//Spring Bootアプリケーションを起動
 	}

@@ -19,41 +19,40 @@ public class CallUser {
     private String password;//パスワード
     private String role;//ユーザーの権限
 
-    //ゲッターとセッター
-    public Long getId() {//idカラムの値を取得
+    public Long getId() {//以下は各カラムの値を取得、カラムに値を設定
         return id;
     }
 
-    public void setId(Long id) {//idカラムに値を設定
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUserName() {//usernameカラムの値を取得
+    public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {//usernameカラムに値を設定
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public String getPassword() {//passwordカラムの値を取得
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {//passwordカラムに値を設定
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getRole() {//roleカラムの値を取得
+    public String getRole() {
         return role;
     }
 
-    public void setRole(String role) {//roleカラムに値を設定
+    public void setRole(String role) {
         this.role = role;
     }
     
     @Override
-    public String toString() {//このエンティティを文字列にするときの型を定義
+    public String toString() {//文字列にするときの型を定義
         return "CallUser{id=" + id + 
                ", userName=" + userName + 
                ", password='" + password + 
