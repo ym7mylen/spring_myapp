@@ -36,12 +36,12 @@ public class LogStatusService {
      */
     public boolean updateStatusKanri(Long logId, Integer statusKanri) {
         CallLog log = logRepository.findById(logId).orElse(null);
-        if (log == null) {// ID で通話ログを検索。存在しなければ null を返す
-            return false;// 該当ログがなければ false を返す
+        if (log == null) {
+            return false;
         }
         log.setStatusKanri(statusKanri);// 管理者用ステータスを更新
-        logRepository.save(log);// DB に保存（更新）
-        return true;// 更新成功なら true を返す
+        logRepository.save(log);
+        return true;
     }
 
 }

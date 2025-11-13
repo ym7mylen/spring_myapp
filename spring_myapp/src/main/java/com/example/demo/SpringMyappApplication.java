@@ -1,8 +1,8 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;//Spring Bootアプリケーションを起動
-import org.springframework.boot.autoconfigure.SpringBootApplication;// Spring Bootアプリケーションの自動設定を有効化
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.service.CustomUserDetailsService;
 
@@ -10,9 +10,9 @@ import com.example.demo.service.CustomUserDetailsService;
 public class SpringMyappApplication {
 
 	@Autowired
-    private CustomUserDetailsService customUserDetailsService; // ← サービスをDI
+    private CustomUserDetailsService customUserDetailsService; // サービスを入れる
 	public static void main(String[] args) {
-		SpringApplication.run(SpringMyappApplication.class, args);//Spring Bootアプリケーションを起動
+		SpringApplication.run(SpringMyappApplication.class, args);//　Spring Bootアプリケーションを起動
 	}
 
 }

@@ -16,21 +16,21 @@
             <h2 class="detail-title">通話ログ詳細</h2>
             <p>表示期間: <span th:text="${startDate}"></span> ～ <span th:text="${endDate}"></span></p>
             <div class="table-responsive">
-                <table class="table table-hover align-middle">
+                <table class="table table-hover align-middle"><!--table-hoverはCSSで上書き済み、align-middleはセル内の縦方向のテキストを中央揃えにするスタイル-->
 					<thead>
     					<tr th:if="${userRole == 'ROLE_USER'}">
-        					<th>CallDate</th>
-        					<th>FileName</th>
-        					<th>Action</th>
+        					<th>通話日時</th>
+        					<th>ファイル名</th>
+        					<th>操作</th>
     					</tr>
     					<tr th:if="${userRole != 'ROLE_USER'}">
-        					<th>CallDate</th>
-        					<th>FileName</th>
-        					<th>FilePath</th>
-        					<th>CreatedAt</th>
-        					<th>UpdatedAt</th>
-        					<th>Action</th>
-        					<th>Status</th>
+        					<th>通話日時</th>
+        					<th>ファイル名</th>
+        					<th>ファイルパス</th>
+        					<th>作成日時</th>
+        					<th>更新日時</th>
+        					<th>操作</th>
+        					<th>ステータス</th>
     					</tr>
 					</thead>
 					<tbody>
@@ -39,7 +39,7 @@
         					<td th:text="${log.fileName}"></td>
         					<td>
             					<button type="button" class="btn btn-primary btn-sm btn-play"
-                    				th:onclick="'playVideo(\'video-' + ${log.id} + '\')'">
+                    				th:onclick="'playVideo(\'video-' + ${log.id} + '\')'"><!--再生ボタンカラー・サイズはCSSで上書き済み-->
                 					再生
             					</button>
         					</td>
@@ -52,7 +52,7 @@
         					<td th:text="${log.updatedAt}"></td>
         					<td>
     							<button type="button" class="btn btn-primary btn-sm btn-play"
-            						th:onclick="'playVideo(\'video-' + ${log.id} + '\')'">
+            						th:onclick="'playVideo(\'video-' + ${log.id} + '\')'"><!--再生ボタンカラー・サイズはCSSで上書き済み-->
         							再生
     							</button>
     							<video th:id="'video-' + ${log.id}" style="display:none;">
@@ -66,14 +66,14 @@
            	 						class="btn btn-warning btn-sm btn-role btn-role-confirm"
             						th:id="'kakunin-' + ${log.id}"
             						th:disabled="${log.statusKakunin == 1}"
-            						th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kakunin\')'">
+            						th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kakunin\')'"><!--確認者ボタンカラー・サイズはCSSで上書き済み-->
         							確認者
     							</button>
     							<button th:if="${userRole == 'ROLE_ADMIN'}"
             						class="btn btn-danger btn-sm btn-role btn-role-admin"
             						th:id="'kanri-' + ${log.id}"
             						th:disabled="${log.statusKanri == 1}"
-            						th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kanri\')'">
+            						th:onclick="'toggleStatus(this, ' + ${log.id} + ', \'kanri\')'"><!--管理者ボタンカラー・サイズはCSSで上書き済み-->
         							管理者
     							</button>
 							</td>

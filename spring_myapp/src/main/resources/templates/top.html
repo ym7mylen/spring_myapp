@@ -12,34 +12,34 @@
 <body>
 	<div th:replace="~{fragments/header :: header('コールセンターシステム')}"></div>
     <div class="top-bg">
-        <div class="top-box mb-4">
-            <h2 class="mb-3 text-center">通話ログアップロード</h2>
+        <div class="top-box mb-4"><!--下に適度1.5rem余白-->
+            <h2 class="mb-3 text-center">通話ログアップロード</h2><!--下に適度1rem余白-->
             <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-                <div class="mb-3">
+                <div class="mb-3"><!--下に適度1rem余白-->
                     <label for="callDate" class="form-label">日付:</label>
                     <input type="date" id="callDate" name="callDate" class="form-control" required>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3"><!--下に適度1rem余白-->
                     <label for="file" class="form-label">通話ファイル (MP4):</label>
                     <input type="file" id="file" name="file" accept="video/mp4" class="form-control" required>
                 </div>
                 <button type="submit" class="btn upload-btn">アップロード</button>
             </form>
-            <div th:if="${success}" class="alert alert-success mt-3 text-center" role="alert">
+            <div th:if="${success}" class="alert alert-success mt-3 text-center" role="alert"><!--上に適度1rem余白-->
                 <p th:text="${success}"></p>
             </div>
-            <div th:if="${error}" class="alert alert-danger mt-3 text-center" role="alert">
+            <div th:if="${error}" class="alert alert-danger mt-3 text-center" role="alert"><!--上に適度1rem余白-->
                 <p th:text="${error}"></p>
             </div>
         </div>
         <div class="top-box">
-            <h2 class="mb-3 text-center">通話ログ詳細</h2>
+            <h2 class="mb-3 text-center">通話ログ詳細</h2><!--下に適度1rem余白-->
             <form th:action="@{/detail}" method="get">
-                <div class="mb-3">
+                <div class="mb-3"><!--下に適度1rem余白-->
                     <label for="startDate" class="form-label">開始日:</label>
                     <input type="date" id="startDate" name="startDate" class="form-control" required>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3"><!--下に適度1rem余白-->
                     <label for="endDate" class="form-label">終了日:</label>
                     <input type="date" id="endDate" name="endDate" class="form-control" required>
                 </div>

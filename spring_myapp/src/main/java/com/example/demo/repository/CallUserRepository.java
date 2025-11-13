@@ -1,9 +1,9 @@
 package com.example.demo.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;//JpaRepositoryをインポートし、基本的なCRUD操作が使える
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.CallUser;//CallUserクラスをインポート
+import com.example.demo.model.CallUser;
 
 @Repository
 public interface CallUserRepository extends JpaRepository<CallUser, Long> {// CallUserRepositoryの定義

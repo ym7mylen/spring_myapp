@@ -1,14 +1,14 @@
 package com.example.demo.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;//@Entityを使う
-import jakarta.persistence.GeneratedValue;//主キーの値を自動生成
-import jakarta.persistence.GenerationType;//自動採番の戦略を指定
-import jakarta.persistence.Id;//主キーを指定
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 
-@Entity//データベースのテーブルと対応付けるエンティティクラス
+@Entity//データベースのテーブルと対応付ける
 @Table(name = "call_users")
 public class CallUser {
     @Id//テーブルの主キー
