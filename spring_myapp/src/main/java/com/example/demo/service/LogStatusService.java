@@ -11,8 +11,9 @@ import com.example.demo.repository.CallLogRepository;
 @Transactional// メソッドの中で行われる複数のDB操作をひとまとめに管理
 public class LogStatusService {
 
+	// 通話ログのDB操作用リポジトリを自動で入れる
     @Autowired
-    private CallLogRepository logRepository;// 通話ログのDB操作用リポジトリを自動で入れる
+    private CallLogRepository logRepository;
     /**
      * 確認者用ステータス更新
      * @param logId 通話ログID
@@ -28,6 +29,7 @@ public class LogStatusService {
         logRepository.save(log);// DB に保存（更新）
         return true;// 更新成功なら true を返す
     }
+    
     /**
      * 管理者用ステータス更新
      * @param logId 通話ログID

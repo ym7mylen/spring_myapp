@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.CallUser;
 
-@Repository
-public interface CallUserRepository extends JpaRepository<CallUser, Long> {// CallUserRepositoryの定義
+@Repository// CallUserRepositoryの定義
+public interface CallUserRepository extends JpaRepository<CallUser, Long> {
 	// 以下の処理が自動的に利用可になる
 	// findAll()      → 全件取得
 	// findById()     → ID指定で1件取得

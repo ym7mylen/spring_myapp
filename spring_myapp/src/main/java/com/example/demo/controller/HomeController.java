@@ -39,20 +39,22 @@ import com.example.demo.repository.CallUserRepository;
 @Controller
 public class HomeController {
 
+	// 通話ログ用のデータ操作リポジトリ
     @Autowired
-    private CallLogRepository callLogRepository;// 通話ログ用のデータ操作リポジトリ
-
+    private CallLogRepository callLogRepository;
+    // ユーザー情報用のデータ操作リポジトリ
     @Autowired
-    private CallUserRepository callUserRepository;// ユーザー情報用のデータ操作リポジトリ
-
+    private CallUserRepository callUserRepository;
+    // パスワード暗号化用
     @Autowired
-    private PasswordEncoder passwordEncoder;// パスワード暗号化用
+    private PasswordEncoder passwordEncoder;
 
     // ===============================
     // 　　　　　　新規登録画面
     // ===============================
+ // フォームに入力されたデータをこのオブジェクトに格納する設定
     @GetMapping("/register")
-    public String showRegisterForm(Model model) {// フォームに入力されたデータをこのオブジェクトに格納する設定
+    public String showRegisterForm(Model model) {
         model.addAttribute("callUser", new CallUser());
         return "register";
     }
@@ -64,6 +66,7 @@ public class HomeController {
             callUserRepository.save(user);// データベースに保存
             redirectAttributes.addFlashAttribute("success", "登録が完了しました！");// 登録成功メッセージをリダイレクト先に渡す
             return "redirect:/success";
+            
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "登録に失敗しました。");// 登録失敗時メッセージ
@@ -90,8 +93,9 @@ public class HomeController {
     // ===============================
     // 　　　　　　 top画面
     // ===============================
+    // フォームに入力されたデータをこのオブジェクトに格納する設定
     @GetMapping("/")
-    public String topPage(Model model) {// フォームに入力されたデータをこのオブジェクトに格納する設定
+    public String topPage(Model model) {
         model.addAttribute("callLog", new CallLog());
         return "top";
     }
@@ -114,13 +118,15 @@ public class HomeController {
             String username = auth.getName();
             CallUser currentUser = callUserRepository.findByUserName(username);
             LocalDate callDate = callLog.getCallDate();// 通話日付がフォームに無い場合は本日の日付を使用
+            
             if (callDate == null) callDate = LocalDate.now();
-            String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";// アップロード先ディレクトリを作成
-            File uploadFolder = new File(uploadDir);
+            	String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";// アップロード先ディレクトリを作成
+            	File uploadFolder = new File(uploadDir);
             if (!uploadFolder.exists()) uploadFolder.mkdirs();
-            String originalFileName = file.getOriginalFilename();// ファイルを保存
-            File dest = new File(uploadDir + originalFileName);
-            file.transferTo(dest);
+            	String originalFileName = file.getOriginalFilename();// ファイルを保存
+            	File dest = new File(uploadDir + originalFileName);
+            	file.transferTo(dest);
+            
             callLog.setFileName(originalFileName);// DB保存用のパス設定
             callLog.setFilePath(String.format("/logs/%d/%02d/%s",
                     callDate.getYear(),
@@ -132,6 +138,7 @@ public class HomeController {
             callLog.setUserId(currentUser.getId());// 作成者IDセット
             callLogRepository.save(callLog);// DBに保存
             redirectAttributes.addFlashAttribute("success", "ファイルが正常にアップロードされました");
+            
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "ファイル保存に失敗しました");
@@ -152,6 +159,7 @@ public class HomeController {
         Path filePath = Paths.get(uploadDir).resolve(fileName);
         File file = filePath.toFile();
         File dummyFile = new File(uploadDir + "dummy.mp4");
+        
         if (file.exists() && file.canRead()) {// 実ファイルが存在する場合は返す
             Resource resource = new UrlResource(file.toURI());
             return ResponseEntity.ok()
@@ -167,7 +175,8 @@ public class HomeController {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + dummyFile.getName() + "\"")
                     .body(resource);
         }
-        System.out.println("音声ファイルもダミーファイルも存在しません: " + filePath.toString());// 実ファイルもダミーファイルも存在しない場合
+        
+        System.out.println("音声ファイルもダミーファイルも存在しません: " + filePath.toString());// デバック用：実ファイルもダミーファイルも存在しない場合
 
         String message = "(ファイルが存在しません)";
         return ResponseEntity.ok()
@@ -186,15 +195,18 @@ public class HomeController {
             Authentication authentication) {
         LocalDate startDate = LocalDate.parse(startDateStr); //　文字列日付をLocalDateに変換
         LocalDate endDate = LocalDate.parse(endDateStr);
+        
         List<CallLog> callLogs = callLogRepository.findByCallDateBetween(startDate, endDate);// 指定期間の通話ログをDBから取得
         model.addAttribute("callLogs", callLogs);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
+        
         String userRole = authentication.getAuthorities().stream()// ログインユーザーの権限取得
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()
-                .orElse("USER");
+                .orElse("ROLE_USER");
         model.addAttribute("userRole", userRole);
+        
         boolean isAdmin = authentication.getAuthorities().stream()// ログインユーザーが管理者か確認者かを判定
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
         boolean isConfirm = authentication.getAuthorities().stream()
@@ -233,6 +245,7 @@ public class HomeController {
             Long logId = request.getId();
             CallLog callLog = callLogRepository.findById(logId)
                     .orElseThrow(() -> new RuntimeException("ログが見つかりません"));// ステータスが送信されている場合のみ更新
+            
             if (request.getStatusKakunin() != null) {
                 callLog.setStatusKakunin(request.getStatusKakunin());
             }
@@ -241,6 +254,7 @@ public class HomeController {
             }
             callLogRepository.save(callLog);// 更新内容をDBに保存
             return ResponseEntity.ok("更新成功");
+            
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("更新失敗");
