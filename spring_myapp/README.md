@@ -26,9 +26,11 @@
 - MariaDB 10.4 
 
 ## テスト用アカウント
-- 一般ユーザー 　ユーザー名: ippan   / パスワード: password
-- 確認者 　ユーザー名: kakunin / パスワード: password
-- 管理者 　ユーザー名: kanri   / パスワード: password
+| 役割       | ユーザー名 | パスワード |
+|------------|------------|------------|
+| 一般ユーザー | ippan      | password   |
+| 確認者     | kakunin    | password   |
+| 管理者     | kanri      | password   |
 
 ## 起動手順
 1. リポジトリをクローン
@@ -55,7 +57,7 @@ spring_myapp/
 │   │   │           ├── model/
 │   │   │           │   ├── CallUser.java                   // ユーザーモデル
 │   │   │           │   ├── CallLog.java                    // 通話ログモデル
-│   │   │           │   ├── LongStatusUpdateRequest.java    //通話ログのステータス更新リクエストを受け取るためのデータクラス」
+│   │   │           │   ├── LongStatusUpdateRequest.java    //通話ログのステータス更新リクエストを受け取るためのデータクラス
 │   │   │          ├── repository/
 │   │   │               ├── CallUserRepository.java         // ユーザー情報のDBアクセス
 │   │   │               ├── CallLogRepository.java          // 通話ログのDBアクセス
