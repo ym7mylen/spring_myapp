@@ -52,7 +52,7 @@ public class HomeController {
     // 　　　　　　新規登録画面
     // ===============================
     @GetMapping("/register")
-    public String showRegisterForm(Model model) {// 新規登録フォーム用に空のCallUserオブジェクトをモデルに設定
+    public String showRegisterForm(Model model) {// フォームに入力されたデータをこのオブジェクトに格納する設定
         model.addAttribute("callUser", new CallUser());
         return "register";
     }
@@ -91,7 +91,7 @@ public class HomeController {
     // 　　　　　　 top画面
     // ===============================
     @GetMapping("/")
-    public String topPage(Model model) {// フォーム用に空のCallLogオブジェクトをセット
+    public String topPage(Model model) {// フォームに入力されたデータをこのオブジェクトに格納する設定
         model.addAttribute("callLog", new CallLog());
         return "top";
     }

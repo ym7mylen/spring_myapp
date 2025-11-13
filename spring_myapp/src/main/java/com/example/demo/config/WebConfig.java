@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
        
-        registry.addResourceHandler("/upload/mp4/**") // Mac環境の場合。uploadフォルダを外部リソースとして公開
+        registry.addResourceHandler("/upload/mp4/**") // このURLにアクセスされた場合指定したローカルフォルダのファイルを返す設定
         	.addResourceLocations("file:///Users/yuki/git/spring_myapp/upload/mp4/");
     }
     

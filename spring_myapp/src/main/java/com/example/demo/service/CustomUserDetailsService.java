@@ -4,20 +4,20 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;// 権限を表す
-import org.springframework.security.core.userdetails.User;// SecurityのUserDetail実装
-import org.springframework.security.core.userdetails.UserDetails;// ユーザー情報を表す
-import org.springframework.security.core.userdetails.UserDetailsService;// ユーザー情報を取得
-import org.springframework.security.core.userdetails.UsernameNotFoundException;// ユーザーが見つからなかったときに投げる例外
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;// パスワードをBCryptでハッシュ化
-import org.springframework.security.crypto.password.PasswordEncoder;// パスワードの照合を抽象化
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.CallUser;// ユーザーモデル
-import com.example.demo.repository.CallUserRepository;// データベース操作用のリポジトリ
+import com.example.demo.model.CallUser;
+import com.example.demo.repository.CallUserRepository;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {// SpringSecurityの認証でユーザー情報を取得するクラスを実装
+public class CustomUserDetailsService implements UserDetailsService {// SpringSecurityのログイン認証でユーザー情報を取得するクラスを実装
 
     @Autowired
     private CallUserRepository callUserRepository;// ユーザーデータベース操作用リポジトリを自動で入れる
@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {// SpringSe
         CallUser user = callUserRepository.findByUserName(username);// DBからユーザー名検索してCallUserオブジェクトを取得
         System.out.println("ログインユーザー情報: " + user);// デバッグ用にユーザー情報を表示
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");// ユーザーが存在しなければ例外を投げる
+            throw new UsernameNotFoundException("User not found");// ユーザーが存在しなければそのように表示
         } 
         String roleName;// roleを権限名に変換
         System.out.println("ユーザーroleカラムの実際の値: " + user.getRole());// DBに保存されているroleカラムの値を確認（デバッグ用）
@@ -56,7 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {// SpringSe
     }
     
     public void hashExistingPasswords() {// 既存ユーザーのハッシュ化
-        List<CallUser> users = callUserRepository.findAll();// DB から全ユーザーを取得
+        List<CallUser> users = callUserRepository.findAll();// DBから全ユーザーを取得
         for (CallUser user : users) {
             String pw = user.getPassword();
             if (pw.startsWith("$2a$") || pw.startsWith("$2b$")) {// すでにハッシュ化されているものはスキップ（BCryptは$2a$か$2b$で始まる）
@@ -74,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {// SpringSe
         CallUser user = new CallUser();// 新しいユーザーオブジェクトを作成
         user.setUserName(username);// ユーザー名をセット
         user.setPassword(passwordEncoder.encode(rawPassword));// パスワードをハッシュ化してセット
-        user.setRole(String.valueOf(role)); // int → String に変換
-        return callUserRepository.save(user);// DB に保存して返す
+        user.setRole(String.valueOf(role)); // int → Stringに変換
+        return callUserRepository.save(user);// DBに保存して返す
     }
 }

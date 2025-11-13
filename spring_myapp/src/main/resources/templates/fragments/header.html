@@ -1,6 +1,6 @@
 <header th:fragment="header(title)" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <nav class="navbar custom-header shadow-sm position-relative">
-        <div class="header-left" sec:authorize="isAuthenticated()">
+    <nav class="navbar custom-header shadow-sm position-relative"><!--shadow-smは小さい影、position-relativeは相対配置（絶対配置に対して）-->
+        <div class="header-left" sec:authorize="isAuthenticated()"><!--ログイン済みユーザーだけにdivの中身を表示-->
             <span>
                 <b sec:authentication="name"></b> さん
             </span>
@@ -10,7 +10,7 @@
         </div>
         <div class="header-right" sec:authorize="isAuthenticated()">
             <form th:action="@{/logout}" method="post">
-                <button type="submit" class="btn btn-outline-light btn-sm logout-btn">ログアウト</button>
+                <button type="submit" class="btn btn-outline-light btn-sm logout-btn">ログアウト</button><!--type="submit"はフォーム送信ボタン、ログアウトボタンカラー・サイズはCSSで上書き済み-->
             </form>
         </div>       
     </nav>
