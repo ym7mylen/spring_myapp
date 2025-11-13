@@ -51,31 +51,31 @@ spring_myapp/
 │   │   │       └── example/
 │   │   │           ├──config
 │   │   │            │   ├──SecurityConfig.java　　          // セキュリティー設定
-│   │   │            │   ├──WebConfig.java　　               //外部フォルダをWebからアクセス可能にする設定
+│   │   │            │   ├──WebConfig.java　　               // 外部フォルダをWebからアクセス可能にする設定
 │   │   │           ├── controller
 │   │   │           │   ├── HomeController.java             // 画面遷移・ルーティング
 │   │   │           ├── model/
 │   │   │           │   ├── CallUser.java                   // ユーザーモデル
 │   │   │           │   ├── CallLog.java                    // 通話ログモデル
-│   │   │           │   ├── LongStatusUpdateRequest.java    //通話ログのステータス更新リクエストを受け取るためのデータクラス
+│   │   │           │   ├── LongStatusUpdateRequest.java    // 通話ログのステータス更新リクエストを受け取るためのデータクラス
 │   │   │          ├── repository/
 │   │   │               ├── CallUserRepository.java         // ユーザー情報のDBアクセス
 │   │   │               ├── CallLogRepository.java          // 通話ログのDBアクセス
 │   │   │           ├──service
-│   │   │           │   ├── CustomUserDetailsService.java   //ユーザー認証サービス
-│   │   │           │   ├── LogStatusService.java           //ステータス更新処理
+│   │   │           │   ├── CustomUserDetailsService.java   // ユーザー認証サービス
+│   │   │           │   ├── LogStatusService.java           // ステータス更新処理
 │   │   │          └──SpringMyappApplication.java
 │   │   ├── resources/
 │   │   │   ├── application.properties
 │   │   │   ├── static/
-|   |   |        ├──style.css            //スタイル装飾
+|   |   |        ├──style.css            // スタイル装飾
 │   │   │   ├── templates/
 │   │   │   │   ├──fragments
-│   │   │               ├──header.html   //共通ヘッダー
-│   │   │   │   ├── login.html           //ログイン画面
-│   │   │   │   ├── register.html        //新規登録画面
-│   │   │   │   ├── top.html             //TOP画面
-│   │   │   │   ├── detail.html          //ログ詳細画面
+│   │   │               ├──header.html   // 共通ヘッダー
+│   │   │   │   ├── login.html           // ログイン画面
+│   │   │   │   ├── register.html        // 新規登録画面
+│   │   │   │   ├── top.html             // TOP画面
+│   │   │   │   ├── detail.html          // ログ詳細画面
 ├──upload
-               ├──mp4                    //通話ログファイルの保存場所　
+               ├──mp4                    // 通話ログファイルの保存場所　
 ```
