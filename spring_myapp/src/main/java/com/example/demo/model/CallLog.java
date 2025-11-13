@@ -64,8 +64,9 @@ public class CallLog {
     public LocalDate getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDate updatedAt) { this.updatedAt = updatedAt; }
     
+  //文字列にするときの型を定義
     @Override
-    public String toString() {//文字列にするときの型を定義
+    public String toString() {
         return "CallLog{" +
                 "id=" + id +
                 ", userId=" + userId +

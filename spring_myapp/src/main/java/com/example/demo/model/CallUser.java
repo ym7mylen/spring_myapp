@@ -19,7 +19,8 @@ public class CallUser {
     private String password;//パスワード
     private String role;//ユーザーの権限
 
-    public Long getId() {//以下は各カラムの値を取得、カラムに値を設定
+  //以下は各カラムの値を取得、カラムに値を設定
+    public Long getId() {
         return id;
     }
 
@@ -51,8 +52,8 @@ public class CallUser {
         this.role = role;
     }
     
-    @Override
-    public String toString() {//文字列にするときの型を定義
+    @Override//文字列にするときの型を定義
+    public String toString() {
         return "CallUser{id=" + id + 
                ", userName=" + userName + 
                ", password='" + password + 

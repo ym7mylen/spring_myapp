@@ -23,7 +23,6 @@ public class SecurityConfig {
                     return "POST".equals(request.getMethod()) || "PUT".equals(request.getMethod()) || "DELETE".equals(request.getMethod());
                 })
             );
-		System.out.println(http);
 		http
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/register", "/login", "/success","/style.css/**", "/upload/mp4/**").permitAll()
