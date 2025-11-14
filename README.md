@@ -53,6 +53,7 @@
 10/31 と 11/7 に作成された音声ファイルだけ実際の音声（MP4）です。  
 それ以外の日付の「音声ファイル」は文字列で空ファイルです。  
 実際の音声をアップロードする場合は、拡張子 .mp4 のファイルのみアップロード可能です。
+このアプリのキャプチャ保存フォルダ名は `Lesson12-1.spring_myapp(screenshot)` です。
 
 ## 頑張ったところ
 
@@ -78,7 +79,7 @@ spring_myapp/
 │   │   ├── java/
 │   │   │   └── com/
 │   │   │       └── example/
-│   │   │           ├──config
+│   │   │           ├── config
 │   │   │           │   ├── SecurityConfig.java　　          // セキュリティー設定
 │   │   │           │   └── WebConfig.java　　               // 外部フォルダをWebからアクセス可能にする設定
 │   │   │           ├── controller
@@ -90,7 +91,7 @@ spring_myapp/
 │   │   │           ├── repository/
 │   │   │           │   ├── CallLogRepository.java          // 通話ログのDBアクセス
 │   │   │           │   └── CallUserRepository.java         // ユーザー情報のDBアクセス
-│   │   │           ├──service
+│   │   │           ├── service
 │   │   │           │   ├── CustomUserDetailsService.java   // ユーザー認証サービス
 │   │   │           │   └── LogStatusService.java           // ステータス更新処理
 │   │   │           └── SpringMyappApplication.java
@@ -108,6 +109,7 @@ spring_myapp/
 │   │   │   │   │   └── detail.js        //詳細画面専用の JavaScript（再生＆ステータス更新処理）
 |   |   |   │   └── style.css            // スタイル装飾
 │   │   │   └── application.properties
-├──upload
-    └── mp4                    // 通話ログファイルの保存場所　
+├── upload
+│   └── mp4                              // 通話ログファイルの保存場所
+├── Lesson12-1.spring_myapp(screenshot)  // このコールログアプリのキャプチャ保存フォルダ(画像8枚)
 ```
