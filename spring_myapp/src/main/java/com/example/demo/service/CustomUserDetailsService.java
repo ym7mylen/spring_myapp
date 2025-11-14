@@ -88,3 +88,4 @@ public class CustomUserDetailsService implements UserDetailsService {
         return callUserRepository.save(user);// DBに保存して返す
     }
 }
+
