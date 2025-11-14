@@ -13,31 +13,32 @@ import jakarta.persistence.Table;
 @Table(name = "call_logs")
 public class CallLog {
 
-    @Id//テーブルの主キー
+    @Id// テーブルの主キー
     @GeneratedValue(strategy = GenerationType.IDENTITY)//IDを自動採番する設定(MySQLで)
-    private Long id;//id
+    private Long id;// id
 
-    private Long userId;//ユーザーid
-
-    @Column(nullable = false)
-    private LocalDate callDate;//電話した日
-
-    private String fileName;//ファイル名
+    private Long userId;// ユーザーid
 
     @Column(nullable = false)
-    private String filePath;//ファイルパス
+    private LocalDate callDate;// 電話した日
 
-    private LocalDate createdAt;//作成日
+    private String fileName;// ファイル名
+
+    @Column(nullable = false)
+    private String filePath;// ファイルパス
+
+    private LocalDate createdAt;// 作成日
 
     @Column(name = "status_kakunin", nullable = false)
-    private int statusKakunin;  // 0=未確認, 1=確認済（確認者用ステータス）
+    private int statusKakunin;// 0=未確認, 1=確認済（確認者用ステータス）
 
     @Column(name = "status_kanri", nullable = false)
-    private int statusKanri;    // 0=未確認, 1=確認済（管理者用ステータス）
+    private int statusKanri;// 0=未確認, 1=確認済（管理者用ステータス）
 
     private LocalDate updatedAt;//更新日
 
-    public Long getId() { return id; }//以下は各カラムの値を取得、カラムに値を設定
+    // 以下は各カラムの値を取得、カラムに値を設定
+    public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public Long getUserId() { return userId; }
@@ -64,7 +65,7 @@ public class CallLog {
     public LocalDate getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDate updatedAt) { this.updatedAt = updatedAt; }
     
-  //文字列にするときの型を定義
+    // 文字列にするときの型を定義
     @Override
     public String toString() {
         return "CallLog{" +

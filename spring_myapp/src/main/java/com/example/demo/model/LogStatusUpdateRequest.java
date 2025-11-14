@@ -6,7 +6,7 @@ public class LogStatusUpdateRequest {
 
     private Integer statusKanri;// 管理者用ステータス（0=未確認, 1=確認済）
 
-  //以下は各カラムの値を取得、カラムに値を設定
+  // 以下は各カラムの値を取得、カラムに値を設定
     public LogStatusUpdateRequest() {}
 
     public Long getId() {
@@ -33,7 +33,7 @@ public class LogStatusUpdateRequest {
         this.statusKanri = statusKanri;
     }
 
-    @Override//文字列にする時の型を定義
+    @Override// 文字列にする時の型を定義
     public String toString() {
         return "LogStatusUpdateRequest{" +
                 "id=" + id +

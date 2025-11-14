@@ -10,7 +10,7 @@ import com.example.demo.service.CustomUserDetailsService;
 public class SpringMyappApplication {
 
 	@Autowired
-    private CustomUserDetailsService customUserDetailsService; // サービスを入れる
+    private CustomUserDetailsService customUserDetailsService;// サービスを入れる
 	public static void main(String[] args) {
 		SpringApplication.run(SpringMyappApplication.class, args);//　Spring Bootアプリケーションを起動
 	}

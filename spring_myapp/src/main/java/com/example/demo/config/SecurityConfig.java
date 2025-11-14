@@ -20,7 +20,7 @@ public class SecurityConfig {
 		http
 			.csrf(csrf -> csrf
                 .requireCsrfProtectionMatcher(request -> { // CSRF保護が必要なリクエストの条件を指定
-                    return "POST".equals(request.getMethod()) || "PUT".equals(request.getMethod()) || "DELETE".equals(request.getMethod());
+                    return "POST".equals(request.getMethod());
                 })
             );
 		http

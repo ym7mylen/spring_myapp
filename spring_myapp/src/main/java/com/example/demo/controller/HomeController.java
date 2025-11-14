@@ -52,7 +52,7 @@ public class HomeController {
     // ===============================
     // 　　　　　　新規登録画面
     // ===============================
- // フォームに入力されたデータをこのオブジェクトに格納する設定
+    // フォームに入力されたデータをこのオブジェクトに格納する設定
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("callUser", new CallUser());
@@ -193,7 +193,7 @@ public class HomeController {
             @RequestParam("endDate") String endDateStr,
             Model model,
             Authentication authentication) {
-        LocalDate startDate = LocalDate.parse(startDateStr); //　文字列日付をLocalDateに変換
+        LocalDate startDate = LocalDate.parse(startDateStr);//　文字列日付をLocalDateに変換
         LocalDate endDate = LocalDate.parse(endDateStr);
         
         List<CallLog> callLogs = callLogRepository.findByCallDateBetween(startDate, endDate);// 指定期間の通話ログをDBから取得
