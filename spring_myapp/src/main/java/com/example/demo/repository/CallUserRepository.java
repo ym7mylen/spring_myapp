@@ -15,3 +15,4 @@ public interface CallUserRepository extends JpaRepository<CallUser, Long> {
 	// count()        → レコード件数を取得
 	CallUser findByUserName(String userName);
 }
+
