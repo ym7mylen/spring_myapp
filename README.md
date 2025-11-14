@@ -84,12 +84,12 @@ spring_myapp/
 │   │   │           ├── controller
 │   │   │           │   └── HomeController.java             // 画面遷移・ルーティング
 │   │   │           ├── model/
-│   │   │           │   ├── CallUser.java                   // ユーザーモデル
 │   │   │           │   ├── CallLog.java                    // 通話ログモデル
+│   │   │           │   ├── CallUser.java                   // ユーザーモデル
 │   │   │           │   └── LongStatusUpdateRequest.java    // 通話ログのステータス更新リクエストを受け取るためのデータクラス
 │   │   │           ├── repository/
-│   │   │           │   ├── CallUserRepository.java         // ユーザー情報のDBアクセス
-│   │   │           │   └── CallLogRepository.java          // 通話ログのDBアクセス
+│   │   │           │   ├── CallLogRepository.java          // 通話ログのDBアクセス
+│   │   │           │   └── CallUserRepository.java         // ユーザー情報のDBアクセス
 │   │   │           ├──service
 │   │   │           │   ├── CustomUserDetailsService.java   // ユーザー認証サービス
 │   │   │           │   └── LogStatusService.java           // ステータス更新処理
@@ -97,11 +97,12 @@ spring_myapp/
 │   │   ├── resources/
 │   │   │   ├── templates/
 │   │   │   │   └── fragments
-│   │   │   │       └── header.html      // 共通ヘッダー
+│   │   │   │   │   └── header.html      // 共通ヘッダー
+│   │   │   │   ├── detail.html          // ログ詳細画面
 │   │   │   │   ├── login.html           // ログイン画面
 │   │   │   │   ├── register.html        // 新規登録画面
-│   │   │   │   ├── top.html             // TOP画面
-│   │   │   │   └── detail.html          // ログ詳細画面
+│   │   │   │   ├── success.html         // 登録完了画面
+│   │   │   │   └── top.html             // TOP画面
 │   │   │   ├── static/
 |   |   |   │   ├── js
 │   │   │   │   │   └── detail.js        //詳細画面専用の JavaScript（再生＆ステータス更新処理）
