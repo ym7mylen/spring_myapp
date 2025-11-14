@@ -14,3 +14,5 @@ public interface CallLogRepository extends JpaRepository<CallLog, Long> {
     List<CallLog> findByCallDateBetween(LocalDate startDate, LocalDate endDate); // 追加：日付範囲指定で検索
 
 }
+
+
