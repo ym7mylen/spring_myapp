@@ -43,3 +43,5 @@ function toggleStatus(btn, logId, type) {
         btn.disabled = false;
     });
 }
+
+
