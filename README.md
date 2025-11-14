@@ -96,7 +96,7 @@ spring_myapp/
 │   │   │           └── SpringMyappApplication.java
 │   │   ├── resources/
 │   │   │   ├── templates/
-│   │   │   │   └── fragments
+│   │   │   │   ├── fragments
 │   │   │   │   │   └── header.html      // 共通ヘッダー
 │   │   │   │   ├── detail.html          // ログ詳細画面
 │   │   │   │   ├── login.html           // ログイン画面
