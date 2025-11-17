@@ -30,15 +30,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.dto.Item;
 import com.example.demo.model.CallLog;
 import com.example.demo.model.CallUser;
 import com.example.demo.model.LogStatusUpdateRequest;
 import com.example.demo.repository.CallLogRepository;
 import com.example.demo.repository.CallUserRepository;
+import com.example.demo.repository.ItemDao;
 
 @Controller
 public class HomeController {
 
+	@Autowired
+    private ItemDao itemDao; 
 	// 通話ログ用のデータ操作リポジトリ
     @Autowired
     private CallLogRepository callLogRepository;
@@ -48,6 +52,9 @@ public class HomeController {
     // パスワード暗号化用
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+//    @Autowired
+//    private ItemDao itemDao;
 
     // ===============================
     // 　　　　　　新規登録画面
@@ -93,12 +100,37 @@ public class HomeController {
     // ===============================
     // 　　　　　　 top画面
     // ===============================
-    // フォームに入力されたデータをこのオブジェクトに格納する設定
+    // 
+//    @GetMapping("/")
+//    public String topPage(Model model) {
+//        model.addAttribute("callLog", new CallLog());
+//        return "top";
+//    }
+
+//    @GetMapping("/")
+//    public String top(Model model) {
+//    	
+//    	ItemDao itemDao = new ItemDao();
+//
+//    	List<Item> items = ItemDao.findAll();  
+//        model.addAttribute("items", items);    
+//
+//        return "top";  // top.html を表示
+//    }
+//    
+
+//    
+
     @GetMapping("/")
-    public String topPage(Model model) {
+    public String top(Model model) {
         model.addAttribute("callLog", new CallLog());
+        
+        List<Item> items = itemDao.findAll(); // DBから商品を取得
+        model.addAttribute("items", items);
+        
         return "top";
     }
+
 
     // ===============================
     // 　　　　通話ログアップロード

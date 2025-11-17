@@ -4,9 +4,12 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,6 +39,14 @@ public class CallLog {
     private int statusKanri;// 0=未確認, 1=確認済（管理者用ステータス）
 
     private LocalDate updatedAt;//更新日
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id") // call_logs テーブルに item_id カラムが必要
+    private ItemEntity item;
+
+    public ItemEntity getItem() { return item; }
+    public void setItem(ItemEntity item) { this.item = item; }
+
 
     // 以下は各カラムの値を取得、カラムに値を設定
     public Long getId() { return id; }

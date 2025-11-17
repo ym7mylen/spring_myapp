@@ -20,11 +20,13 @@
 					<thead>
     					<tr th:if="${userRole == 'ROLE_USER'}">
         					<th>通話日時</th>
+        					<th>商品</th>
         					<th>ファイル名</th>
         					<th>操作</th>
     					</tr>
     					<tr th:if="${userRole != 'ROLE_USER'}">
         					<th>通話日時</th>
+        					<th>商品</th>
         					<th>ファイル名</th>
         					<th>ファイルパス</th>
         					<th>作成日時</th>
@@ -36,6 +38,7 @@
 					<tbody>
     					<tr th:each="log : ${callLogs}" th:if="${userRole == 'ROLE_USER'}">
         					<td th:text="${log.callDate}"></td>
+        					<td th:text="${log.item != null ? log.item.name + '（' + log.item.category + '）' : '-'}"></td>
         					<td th:text="${log.fileName}"></td>
         					<td>
             					<button type="button" class="btn btn-primary btn-sm btn-play"
@@ -46,6 +49,7 @@
     					</tr>
     					<tr th:each="log : ${callLogs}" th:if="${userRole != 'ROLE_USER'}">
         					<td th:text="${log.callDate}"></td>
+        					<td th:text="${log.item != null ? log.item.name + '（' + log.item.category + '）' : '-'}"></td>
         					<td th:text="${log.fileName}"></td>
         					<td th:text="${log.filePath}"></td>
         					<td th:text="${log.createdAt}"></td>
