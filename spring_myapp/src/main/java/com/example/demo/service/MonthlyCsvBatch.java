@@ -80,3 +80,5 @@ public class MonthlyCsvBatch {
         System.out.println("=== CSVバッチ処理終了 ===");
     }
 }
+
+
