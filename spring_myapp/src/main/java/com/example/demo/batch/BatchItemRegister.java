@@ -34,3 +34,5 @@ public class BatchItemRegister {
         System.out.println("=== バッチ処理終了 ===");
     }
 }
+
+
