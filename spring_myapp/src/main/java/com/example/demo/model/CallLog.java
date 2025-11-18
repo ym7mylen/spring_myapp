@@ -38,7 +38,11 @@ public class CallLog {
     @Column(name = "status_kanri", nullable = false)
     private int statusKanri;// 0=未確認, 1=確認済（管理者用ステータス）
 
-    private LocalDate updatedAt;//更新日
+    @Column(name = "kakunin_at")
+    private LocalDate kakuninAt;
+
+    @Column(name = "kanri_at")
+    private LocalDate kanriAt;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id") // call_logs テーブルに item_id カラムが必要
@@ -73,8 +77,11 @@ public class CallLog {
     public int getStatusKanri() { return statusKanri; }
     public void setStatusKanri(int statusKanri) { this.statusKanri = statusKanri; }
 
-    public LocalDate getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDate updatedAt) { this.updatedAt = updatedAt; }
+    public LocalDate getKakuninAt() { return kakuninAt; }
+    public void setKakuninAt(LocalDate kakuninAt) { this.kakuninAt = kakuninAt; }
+
+    public LocalDate getKanriAt() { return kanriAt; }
+    public void setKanriAt(LocalDate kanriAt) { this.kanriAt = kanriAt; }
     
     // 文字列にするときの型を定義
     @Override
@@ -88,7 +95,8 @@ public class CallLog {
                 ", createdAt=" + createdAt +
                 ", statusKakunin=" + statusKakunin +
                 ", statusKanri=" + statusKanri +
-                ", updatedAt=" + updatedAt +
+                ", kakuninAt=" + kakuninAt +
+                ", kanriAt=" + kanriAt +
                 '}';
     }
 }
