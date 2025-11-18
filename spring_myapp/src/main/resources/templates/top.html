@@ -23,10 +23,13 @@
                     <label for="file" class="form-label">通話ファイル (MP4):</label>
                     <input type="file" id="file" name="file" accept="video/mp4" class="form-control" required>
                 </div>
-                <div th:each="item : ${items}">
-    				<input type="radio" name="itemId" th:value="${item.id}">
-    				<span th:text="|${item.name}（${item.category}）|"></span>
-    				<br>
+                <div class="mb-3"><!--下に適度1rem余白-->
+    				<label for="itemId" class="form-label">商品選択:</label>
+    				<div th:each="item : ${items}">
+        				<input type="radio" name="itemId" th:value="${item.id}">
+        				<span th:text="|${item.name}（${item.category}）|"></span>
+        				<br>
+    				</div>
 				</div>
                 <button type="submit" class="btn upload-btn">アップロード</button>
             </form>

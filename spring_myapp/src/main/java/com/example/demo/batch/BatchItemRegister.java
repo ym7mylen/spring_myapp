@@ -3,7 +3,8 @@ package com.example.demo.batch;
 import java.util.List;
 
 import com.example.demo.dto.Item;
-import com.example.demo.repository.ItemDao;
+import com.example.demo.model.ItemEntity;
+import com.example.demo.service.ItemService;
 
 public class BatchItemRegister {
 
@@ -25,13 +26,22 @@ public class BatchItemRegister {
             new Item(null, "iPad Air", "タブレット")
         );
 
-        ItemDao dao = new ItemDao();
+        ItemService itemService = new ItemService();
 
         for (Item item : items) {
-            dao.insertOrUpdate(item);
+        	ItemEntity itemEntity = convertToEntity(item);
+            itemService.insertOrUpdate(itemEntity);
         }
 
         System.out.println("=== バッチ処理終了 ===");
+    }
+ // Item -> ItemEntity に変換するメソッド
+    private static ItemEntity convertToEntity(Item item) {
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setId(item.getId());  // id は null のままでよい
+        itemEntity.setName(item.getName());
+        itemEntity.setCategory(item.getCategory());
+        return itemEntity;
     }
 }
 

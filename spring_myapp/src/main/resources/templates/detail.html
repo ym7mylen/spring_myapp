@@ -19,18 +19,19 @@
                 <table class="table table-hover align-middle"><!--table-hoverはCSSで上書き済み、align-middleはセル内の縦方向のテキストを中央揃えにするスタイル-->
 					<thead>
     					<tr th:if="${userRole == 'ROLE_USER'}">
-        					<th>通話日時</th>
+        					<th>通話日</th>
         					<th>商品</th>
         					<th>ファイル名</th>
         					<th>操作</th>
     					</tr>
     					<tr th:if="${userRole != 'ROLE_USER'}">
-        					<th>通話日時</th>
+        					<th>通話日</th>
         					<th>商品</th>
         					<th>ファイル名</th>
         					<th>ファイルパス</th>
-        					<th>作成日時</th>
-        					<th>更新日時</th>
+        					<th>作成日</th>
+        					<th th:if="${userRole == 'ROLE_CONFIRM'}">確認日</th>
+        					<th th:if="${userRole == 'ROLE_ADMIN'}">管理日</th>
         					<th>操作</th>
         					<th>ステータス</th>
     					</tr>
@@ -53,7 +54,8 @@
         					<td th:text="${log.fileName}"></td>
         					<td th:text="${log.filePath}"></td>
         					<td th:text="${log.createdAt}"></td>
-        					<td th:text="${log.updatedAt}"></td>
+        					<td th:if="${userRole == 'ROLE_CONFIRM'}" th:text="${log.kakuninAt}"></td>
+        					<td th:if="${userRole == 'ROLE_ADMIN'}" th:text="${log.kanriAt}"></td>
         					<td>
     							<button type="button" class="btn btn-primary btn-sm btn-play"
             						th:onclick="'playVideo(\'video-' + ${log.id} + '\')'"><!--再生ボタンカラー・サイズはCSSで上書き済み-->

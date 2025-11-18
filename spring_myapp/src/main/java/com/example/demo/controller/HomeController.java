@@ -30,19 +30,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.dto.Item;
 import com.example.demo.model.CallLog;
 import com.example.demo.model.CallUser;
+import com.example.demo.model.ItemEntity;
 import com.example.demo.model.LogStatusUpdateRequest;
 import com.example.demo.repository.CallLogRepository;
 import com.example.demo.repository.CallUserRepository;
-import com.example.demo.repository.ItemDao;
+import com.example.demo.repository.ItemRepository;
 
 @Controller
 public class HomeController {
 
 	@Autowired
-    private ItemDao itemDao; 
+    private ItemRepository itemRepository;
 	// 通話ログ用のデータ操作リポジトリ
     @Autowired
     private CallLogRepository callLogRepository;
@@ -125,7 +125,7 @@ public class HomeController {
     public String top(Model model) {
         model.addAttribute("callLog", new CallLog());
         
-        List<Item> items = itemDao.findAll(); // DBから商品を取得
+        List<ItemEntity> items = itemRepository.findAll(); // DBから商品を取得
         model.addAttribute("items", items);
         
         return "top";
@@ -139,6 +139,7 @@ public class HomeController {
     public String uploadCallLog(
             @ModelAttribute CallLog callLog,// フォームからの通話ログ情報
             @RequestParam("file") MultipartFile file,// アップロードファイル
+            @RequestParam("itemId") Long itemId,
             RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {// ファイル未選択時の表示
             redirectAttributes.addFlashAttribute("error", "ファイルを選択してください");
@@ -158,6 +159,12 @@ public class HomeController {
             	String originalFileName = file.getOriginalFilename();// ファイルを保存
             	File dest = new File(uploadDir + originalFileName);
             	file.transferTo(dest);
+            
+            	// 商品IDから商品エンティティを取得
+            ItemEntity item = itemRepository.findById(itemId)
+            	.orElseThrow(() -> new RuntimeException("Item not found with ID: " + itemId));
+            callLog.setItem(item);
+
             
             callLog.setFileName(originalFileName);// DB保存用のパス設定
             callLog.setFilePath(String.format("/logs/%d/%02d/%s",
@@ -278,12 +285,27 @@ public class HomeController {
             CallLog callLog = callLogRepository.findById(logId)
                     .orElseThrow(() -> new RuntimeException("ログが見つかりません"));// ステータスが送信されている場合のみ更新
             
+            // 確認者ボタン
             if (request.getStatusKakunin() != null) {
                 callLog.setStatusKakunin(request.getStatusKakunin());
+                if (request.getStatusKakunin() == 1) {
+                callLog.setKakuninAt(LocalDate.now()); // 確認日時を記録
+                }
+            } else if (callLog.getStatusKakunin() == 1 && callLog.getKakuninAt() == null) {
+                // すでに押されていて日時がまだ入っていない場合は createdAt をコピー
+                callLog.setKakuninAt(callLog.getCreatedAt());
             }
+
+            // 管理者ボタン
             if (request.getStatusKanri() != null) {
                 callLog.setStatusKanri(request.getStatusKanri());
+                if (request.getStatusKanri() == 1) {
+                callLog.setKanriAt(LocalDate.now());   // 管理日時を記録
+                }
+            } else if (callLog.getStatusKanri() == 1 && callLog.getKanriAt() == null) {
+                callLog.setKanriAt(callLog.getCreatedAt());
             }
+            
             callLogRepository.save(callLog);// 更新内容をDBに保存
             return ResponseEntity.ok("更新成功");
             

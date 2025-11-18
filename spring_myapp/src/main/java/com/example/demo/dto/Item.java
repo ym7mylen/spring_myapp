@@ -1,17 +1,17 @@
 package com.example.demo.dto;
 
 public class Item {
-	private Integer id;
+	private Long id;
     private String name;
     private String category;
 
-    public Item(Integer id,String name, String category) {
+    public Item(Long id,String name, String category) {
     	this.id = id;
         this.name = name;
         this.category = category;
     }
 
-    public Integer getId() { return id; }
+    public Long getId() { return id; }
     public String getName() { return name; }
     public String getCategory() { return category; }
 }
