@@ -37,6 +37,9 @@ import com.example.demo.model.LogStatusUpdateRequest;
 import com.example.demo.repository.CallLogRepository;
 import com.example.demo.repository.CallUserRepository;
 import com.example.demo.repository.ItemRepository;
+import com.example.demo.service.ItemService;
+import com.example.demo.service.MonthlyCsvBatch;
+
 
 @Controller
 public class HomeController {
@@ -52,6 +55,15 @@ public class HomeController {
     // パスワード暗号化用
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private MonthlyCsvBatch monthlyCsvBatch;
+    
+    public static final String BASE_DIR = "/Users/yuki/git/spring_myapp/upload/csv/";
+
     
 //    @Autowired
 //    private ItemDao itemDao;
@@ -97,40 +109,31 @@ public class HomeController {
         return "login";
     }
 
-    // ===============================
-    // 　　　　　　 top画面
-    // ===============================
-    // 
-//    @GetMapping("/")
-//    public String topPage(Model model) {
-//        model.addAttribute("callLog", new CallLog());
-//        return "top";
-//    }
-
-//    @GetMapping("/")
-//    public String top(Model model) {
-//    	
-//    	ItemDao itemDao = new ItemDao();
-//
-//    	List<Item> items = ItemDao.findAll();  
-//        model.addAttribute("items", items);    
-//
-//        return "top";  // top.html を表示
-//    }
-//    
-
-//    
-
     @GetMapping("/")
-    public String top(Model model) {
+    public String top(Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("callLog", new CallLog());
+
+        // 前月のCSVファイルを読み込んで商品リストを取得
+        List<ItemEntity> latestItems = itemService.getItemsFromLastMonthCsv(BASE_DIR);
         
-        List<ItemEntity> items = itemRepository.findAll(); // DBから商品を取得
-        model.addAttribute("items", items);
-        
+        if (latestItems == null || latestItems.isEmpty()) {
+            System.out.println("前月のCSVファイルを読み込めませんでした。");
+            
+         // 前々月のCSVファイルを読み込む
+            latestItems = itemService.getItemsFromSecondLastMonthCsv(BASE_DIR);
+            
+            if (latestItems == null || latestItems.isEmpty()) {
+                System.out.println("前々月のCSVファイルも見つかりませんでした。");
+                redirectAttributes.addFlashAttribute("error", "前月および前々月のCSVファイルが見つかりませんでした。");
+                return "redirect:/";  // トップページにリダイレクト
+            }
+            
+            System.out.println("前々月のCSVファイルを使用します。");
+        }
+
+        model.addAttribute("items", latestItems);
         return "top";
     }
-
 
     // ===============================
     // 　　　　通話ログアップロード
@@ -139,8 +142,13 @@ public class HomeController {
     public String uploadCallLog(
             @ModelAttribute CallLog callLog,// フォームからの通話ログ情報
             @RequestParam("file") MultipartFile file,// アップロードファイル
-            @RequestParam("itemId") Long itemId,
+            @RequestParam(value = "itemId", required = false) Long itemId,
             RedirectAttributes redirectAttributes) {
+    	if (itemId == null) {
+            redirectAttributes.addFlashAttribute("error", "商品を選択してください");
+            return "redirect:/";
+        }
+    	System.out.println("選択された商品ID: " + itemId);
         if (file.isEmpty()) {// ファイル未選択時の表示
             redirectAttributes.addFlashAttribute("error", "ファイルを選択してください");
             return "redirect:/";
@@ -162,7 +170,7 @@ public class HomeController {
             
             	// 商品IDから商品エンティティを取得
             ItemEntity item = itemRepository.findById(itemId)
-            	.orElseThrow(() -> new RuntimeException("Item not found with ID: " + itemId));
+            	.orElseThrow(() -> new RuntimeException("Invalid item ID: " + itemId));
             callLog.setItem(item);
 
             
@@ -177,11 +185,18 @@ public class HomeController {
             callLog.setUserId(currentUser.getId());// 作成者IDセット
             callLogRepository.save(callLog);// DBに保存
             redirectAttributes.addFlashAttribute("success", "ファイルが正常にアップロードされました");
+            redirectAttributes.addFlashAttribute("selectedItem", item); // 商品情報も追加
             
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "ファイル保存に失敗しました");
-        }
+    	} catch (IllegalArgumentException e) {
+    		e.printStackTrace();
+    		redirectAttributes.addFlashAttribute("error", e.getMessage());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		redirectAttributes.addFlashAttribute("error", "予期しないエラーが発生しました");
+    	}
         return "redirect:/";
     }
 

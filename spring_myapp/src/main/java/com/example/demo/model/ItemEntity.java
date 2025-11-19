@@ -1,5 +1,11 @@
 package com.example.demo.model;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +23,14 @@ public class ItemEntity {
     private String name;
 
     private String category;
+    
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     // getter / setter
     public Long getId() {
@@ -36,6 +50,18 @@ public class ItemEntity {
     }
     public void setCategory(String category) {
         this.category = category;
+    }
+    public LocalDateTime getCreatedAt() {
+    	return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+    	this.createdAt = createdAt; 
+    }
+    public LocalDateTime getUpdatedAt() {
+    	return updatedAt; 
+    }
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+    	this.updatedAt = updatedAt; 
     }
 }
 
