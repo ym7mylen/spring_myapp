@@ -63,6 +63,17 @@ public class ItemEntity {
     public void setUpdatedAt(LocalDateTime updatedAt) {
     	this.updatedAt = updatedAt; 
     }
+ // toString メソッドをオーバーライド
+    @Override
+    public String toString() {
+        return "ItemEntity{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", category='" + category + '\'' +
+               ", createdAt=" + createdAt +
+               ", updatedAt=" + updatedAt +
+               '}';
+    }
 }
 
 

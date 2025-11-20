@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -23,13 +24,14 @@
                     <label for="file" class="form-label">通話ファイル (MP4):</label>
                     <input type="file" id="file" name="file" accept="video/mp4" class="form-control" required>
                 </div>
-                <div class="mb-3"><!--下に適度1rem余白-->
+               <div class="mb-3"><!-- 下に適度1rem余白 -->
     				<label for="itemId" class="form-label">商品選択:</label>
-    				<div th:each="item : ${items}">
-        				<input type="radio" name="itemId" th:value="${item.id}">
-        				<span th:text="|${item.name}（${item.category}）|"></span>
-        				<br>
-    				</div>
+    				<select id="itemId" name="itemId" class="form-select">
+        				<option value="" disabled selected>商品を選択してください</option>
+        				<div th:each="item : ${items}">
+            				<option th:value="${item.id}" th:text="${item.name} + '（' + ${item.category} + '）'"></option>
+        				</div>
+    				</select>
 				</div>
                 <button type="submit" class="btn upload-btn">アップロード</button>
             </form>
@@ -63,5 +65,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-
-

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -61,12 +62,6 @@ public class HomeController {
 
     @Autowired
     private MonthlyCsvBatch monthlyCsvBatch;
-    
-    public static final String BASE_DIR = "/Users/yuki/git/spring_myapp/upload/csv/";
-
-    
-//    @Autowired
-//    private ItemDao itemDao;
 
     // ===============================
     // 　　　　　　新規登録画面
@@ -114,13 +109,13 @@ public class HomeController {
         model.addAttribute("callLog", new CallLog());
 
         // 前月のCSVファイルを読み込んで商品リストを取得
-        List<ItemEntity> latestItems = itemService.getItemsFromLastMonthCsv(BASE_DIR);
+        List<ItemEntity> latestItems = itemService.getItemsFromLastMonthCsv("/Users/yuki/git/spring_myapp/upload/csv/");
         
         if (latestItems == null || latestItems.isEmpty()) {
             System.out.println("前月のCSVファイルを読み込めませんでした。");
             
          // 前々月のCSVファイルを読み込む
-            latestItems = itemService.getItemsFromSecondLastMonthCsv(BASE_DIR);
+            latestItems = itemService.getItemsFromSecondLastMonthCsv("/Users/yuki/git/spring_myapp/upload/csv/");
             
             if (latestItems == null || latestItems.isEmpty()) {
                 System.out.println("前々月のCSVファイルも見つかりませんでした。");
@@ -130,6 +125,16 @@ public class HomeController {
             
             System.out.println("前々月のCSVファイルを使用します。");
         }
+        
+        // 取得したCSVファイルの商品IDから、DBを参照して商品の詳細情報を取得
+        List<Long> itemIds = latestItems.stream().map(ItemEntity::getId).collect(Collectors.toList());
+        List<ItemEntity> itemsFromDb = itemService.getItemsByIds(itemIds);
+
+        model.addAttribute("items", itemsFromDb);  // DBから取得した商品情報を画面に表示
+   
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+        System.out.println(latestItems);
+        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
 
         model.addAttribute("items", latestItems);
         return "top";
@@ -148,6 +153,7 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("error", "商品を選択してください");
             return "redirect:/";
         }
+    	System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
     	System.out.println("選択された商品ID: " + itemId);
         if (file.isEmpty()) {// ファイル未選択時の表示
             redirectAttributes.addFlashAttribute("error", "ファイルを選択してください");
