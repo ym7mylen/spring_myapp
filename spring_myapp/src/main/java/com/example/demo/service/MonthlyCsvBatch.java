@@ -143,6 +143,7 @@ package com.example.demo.service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -165,7 +166,7 @@ public class MonthlyCsvBatch {
     private ItemRepository itemRepository;
 
     // 毎月1日の1時に実行
-    @Scheduled(cron = "0 */60 * * * *")
+    @Scheduled(cron = "0 0 1 * * *")
     public void execute() {
         System.out.println("=== CSVバッチ処理開始 ===");
 
@@ -270,6 +271,30 @@ public class MonthlyCsvBatch {
             e.printStackTrace();
         }
         return itemList;
+    }
+ // CSVファイルを読み込んでItemEntityをデータベースに保存する
+    public void processCsvFile(String csvFilePath) throws IOException {
+        List<ItemEntity> items = new ArrayList<>();
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] columns = line.split(",");
+                if (columns.length == 2) {  // CSVが3列で構成されていると仮定
+                    ItemEntity item = new ItemEntity();
+                    item.setName(columns[0].trim());  // 商品名
+                    item.setCategory(columns[1].trim());  // カテゴリー
+
+                    // CSVファイルから読み込んだデータをリストに追加
+                    items.add(item);
+                }
+            }
+        }
+        
+        // リストに追加されたアイテムをDBに保存
+        for (ItemEntity item : items) {
+            itemRepository.save(item);  // 保存後、IDが自動的に設定される
+        }
     }
    
 }
