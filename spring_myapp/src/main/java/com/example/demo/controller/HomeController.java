@@ -104,6 +104,9 @@ public class HomeController {
         return "login";
     }
 
+    // ===============================
+    // 　　　　　　  TOP画面
+    // ===============================
     @GetMapping("/")
     public String top(Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("callLog", new CallLog());
@@ -132,9 +135,7 @@ public class HomeController {
 
         model.addAttribute("items", itemsFromDb);  // DBから取得した商品情報を画面に表示
    
-        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
         System.out.println(latestItems);
-        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
 
         model.addAttribute("items", latestItems);
         return "top";
