@@ -186,8 +186,8 @@ public class MonthlyCsvBatch {
         } else {
             System.out.println("既に当月フォルダが存在します: " + currentMonthDir.getAbsolutePath());
         }
+        
         // 前月のフォルダを読み込む
-//        LocalDate now = LocalDate.now();
         LocalDate lastMonth = now.minusMonths(1);  // 1ヶ月前を計算
         String folderName = lastMonth.format(DateTimeFormatter.ofPattern("yyyy_MM"));
         File monthlyDir = new File(BASE_DIR + folderName);
@@ -243,7 +243,7 @@ public class MonthlyCsvBatch {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             while ((line = br.readLine()) != null) {
-                line = line.replace("\uFEFF", "").trim(); // BOM対応
+                line = line.replace("\uFEFF", "").trim(); // BOM対応　CSVファイルの余計な空白を削除で正しくデータを読み込む
                 if (line.isEmpty()) continue;
 
                 String[] values = line.split(",");
@@ -272,7 +272,8 @@ public class MonthlyCsvBatch {
         }
         return itemList;
     }
- // CSVファイルを読み込んでItemEntityをデータベースに保存する
+    
+    // CSVファイルを読み込んでItemEntityをデータベースに保存する
     public void processCsvFile(String csvFilePath) throws IOException {
         List<ItemEntity> items = new ArrayList<>();
         

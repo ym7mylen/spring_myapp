@@ -22,7 +22,7 @@ public class ItemService {
     private MonthlyCsvBatch monthlyCsvBatch;
 
 
-    // CSV登録用：insert or update
+    // CSV登録用：insertかupdate
     public void insertOrUpdate(ItemEntity item) {
         if (item.getId() != null && itemRepository.existsById(item.getId())) {
             // 更新
@@ -48,13 +48,13 @@ public class ItemService {
         return itemRepository.findById(id).orElse(null);
     }
     
- // 前月のCSVファイルを読み込み、商品リストを取得する
+    // 前月のCSVファイルを読み込み、商品リストを取得する
     public List<ItemEntity> getItemsFromLastMonthCsv(String baseDir) {
         // 前月のCSVファイルを取得
         LocalDate now = LocalDate.now();
         LocalDate lastMonth = now.minusMonths(1);
 
-     // LocalDateTimeで始まりと終わりの時間を設定
+        // LocalDateTimeで始まりと終わりの時間を設定
         LocalDateTime startOfMonth = lastMonth.atStartOfDay();  // 前月の00:00:00
         LocalDateTime endOfMonth = lastMonth.atTime(23, 59, 59);  // 前月の23:59:59
 
@@ -77,7 +77,7 @@ public class ItemService {
             return null;
         }
 
-     // すべてのCSVファイルを読み込んでアイテムを追加
+        // すべてのCSVファイルを読み込んでアイテムを追加
         for (File file : files) {
             List<ItemEntity> itemsFromCsv = monthlyCsvBatch.readCsvFile(file);
             if (itemsFromCsv != null) {

@@ -24,15 +24,15 @@ public class ItemEntity {
 
     private String category;
     
-    @CreationTimestamp
+    @CreationTimestamp// 現在時刻が自動的にセット
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @UpdateTimestamp//最終更新日時をセット
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // getter / setter
+    // 以下は各カラムの値を取得、カラムに値を設定
     public Long getId() {
         return id;
     }
@@ -63,7 +63,8 @@ public class ItemEntity {
     public void setUpdatedAt(LocalDateTime updatedAt) {
     	this.updatedAt = updatedAt; 
     }
- // toString メソッドをオーバーライド
+    
+    // 文字列化した時の型を定義
     @Override
     public String toString() {
         return "ItemEntity{" +

@@ -13,13 +13,6 @@ public class BatchItemRegister {
         System.out.println("=== バッチ処理開始 ===");
 
         // ダミーの商品リスト
-//        List<Item> items = List.of(
-//                new Item("iPhone 15", "スマートフォン"),
-//                new Item("Galaxy S23", "スマートフォン"),
-//                new Item("iPad Air", "タブレット")
-//        );
-
-     // バッチではまだDBに入っていないので、id は null で良い
         List<Item> items = List.of(
             new Item(null, "iPhone 15", "スマートフォン"),
             new Item(null, "Galaxy S23", "スマートフォン"),
