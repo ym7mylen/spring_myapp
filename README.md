@@ -79,21 +79,30 @@ spring_myapp/
 │   │   ├── java/
 │   │   │   └── com/
 │   │   │       └── example/
+│   │   │           ├── batch
+│   │   │           │   └── BatchItemRegister.java          // バッジ処理のアイテム登録
 │   │   │           ├── config
 │   │   │           │   ├── SecurityConfig.java　　          // セキュリティー設定
 │   │   │           │   └── WebConfig.java　　               // 外部フォルダをWebからアクセス可能にする設定
 │   │   │           ├── controller
 │   │   │           │   └── HomeController.java             // 画面遷移・ルーティング
+│   │   │           ├── dto
+│   │   │           │   └── Item.java                       // 商品情報を外部に送信する
 │   │   │           ├── model/
 │   │   │           │   ├── CallLog.java                    // 通話ログモデル
 │   │   │           │   ├── CallUser.java                   // ユーザーモデル
+│   │   │           │   ├── ItemEntity.java                 // 商品情報を格納する
 │   │   │           │   └── LongStatusUpdateRequest.java    // 通話ログのステータス更新リクエストを受け取るためのデータクラス
 │   │   │           ├── repository/
 │   │   │           │   ├── CallLogRepository.java          // 通話ログのDBアクセス
-│   │   │           │   └── CallUserRepository.java         // ユーザー情報のDBアクセス
+│   │   │           │   ├── CallUserRepository.java         // ユーザー情報のDBアクセス
+│   │   │           │   ├── DBManager.java                  // DB管理
+│   │   │           │   └── ItemRepository.java             // Item情報のDBアクセス
 │   │   │           ├── service
 │   │   │           │   ├── CustomUserDetailsService.java   // ユーザー認証サービス
-│   │   │           │   └── LogStatusService.java           // ステータス更新処理
+│   │   │           │   ├── ItemService.java                // 商品登録、更新、削除などの処理を行う
+│   │   │           │   ├── LogStatusService.java           // ステータス更新処理
+│   │   │           │   └── MonthlyCsvBatch.java            // 月次CSVバッジ処理
 │   │   │           └── SpringMyappApplication.java
 │   │   ├── resources/
 │   │   │   ├── templates/
@@ -106,7 +115,7 @@ spring_myapp/
 │   │   │   │   └── top.html             // TOP画面
 │   │   │   ├── static/
 |   |   |   │   ├── js
-│   │   │   │   │   └── detail.js        //詳細画面専用の JavaScript（再生＆ステータス更新処理）
+│   │   │   │   │   └── detail.js        // 詳細画面専用の JavaScript（再生＆ステータス更新処理）
 |   |   |   │   └── style.css            // スタイル装飾
 │   │   │   └── application.properties
 ├── upload
