@@ -71,7 +71,8 @@
         							<source th:src="@{${log.filePath}}" type="video/mp4">
     							</video>
     							<span th:if="${#strings.endsWith(log.filePath, '.txt')}"
-          							th:text="${log.filePath}"></span>
+          							th:text="${log.filePath}">
+          					    </span>
 							</td>
 							<td>
     							<button th:if="${userRole == 'ROLE_CONFIRM'}"
