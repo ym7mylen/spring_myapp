@@ -119,6 +119,7 @@ spring_myapp/
 |   |   |   │   └── style.css            // スタイル装飾
 │   │   │   └── application.properties
 ├── upload
+│   └── csv
 │   └── mp4                              // 通話ログファイルの保存場所
 ├── Lesson12-1.spring_myapp(screenshot)  // このコールログアプリのキャプチャ保存フォルダ(画像8枚)
 ```
