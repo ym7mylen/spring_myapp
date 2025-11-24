@@ -141,7 +141,7 @@ public class MonthlyCsvBatch {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] columns = line.split(",");
-                if (columns.length == 2) {  // CSVが3列で構成されていると仮定
+                if (columns.length == 2) {  // CSVが2列で構成されていると仮定
                     ItemEntity item = new ItemEntity();
                     item.setName(columns[0].trim());  // 商品名
                     item.setCategory(columns[1].trim());  // カテゴリー
