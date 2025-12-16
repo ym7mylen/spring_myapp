@@ -112,13 +112,13 @@ public class HomeController {
         model.addAttribute("callLog", new CallLog());
 
         // 前月のCSVファイルを読み込んで商品リストを取得
-        List<ItemEntity> latestItems = itemService.getItemsFromLastMonthCsv("/Users/yuki/git/spring_myapp/upload/csv/");
+        List<ItemEntity> latestItems = itemService.getItemsFromLastMonthCsv("/Users/yuki/Downloads/work/spring_myapp/upload/csv/");
         
         if (latestItems == null || latestItems.isEmpty()) {
             System.out.println("前月のCSVファイルを読み込めませんでした。");
             
          // 前々月のCSVファイルを読み込む
-            latestItems = itemService.getItemsFromSecondLastMonthCsv("/Users/yuki/git/spring_myapp/upload/csv/");
+            latestItems = itemService.getItemsFromSecondLastMonthCsv("/Users/yuki/Downloads/work/spring_myapp/upload/csv/");
             
             if (latestItems == null || latestItems.isEmpty()) {
                 System.out.println("前々月のCSVファイルも見つかりませんでした。");
@@ -168,7 +168,7 @@ public class HomeController {
             LocalDate callDate = callLog.getCallDate();// 通話日付がフォームに無い場合は本日の日付を使用
             
             if (callDate == null) callDate = LocalDate.now();
-            	String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";// アップロード先ディレクトリを作成
+            	String uploadDir = "/Users/yuki/Downloads/work/spring_myapp/upload/mp4/";// アップロード先ディレクトリを作成
             	File uploadFolder = new File(uploadDir);
             if (!uploadFolder.exists()) uploadFolder.mkdirs();
             	String originalFileName = file.getOriginalFilename();// ファイルを保存
@@ -216,7 +216,7 @@ public class HomeController {
             @PathVariable int year,
             @PathVariable int month,
             @PathVariable String fileName) throws IOException {
-        String uploadDir = "/Users/yuki/git/spring_myapp/upload/mp4/";// MP4ファイル保存ディレクトリ
+        String uploadDir = "/Users/yuki/Downloads/work/spring_myapp/upload/mp4/";// MP4ファイル保存ディレクトリ
         Path filePath = Paths.get(uploadDir).resolve(fileName);
         File file = filePath.toFile();
         File dummyFile = new File(uploadDir + "dummy.mp4");
