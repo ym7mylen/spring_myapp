@@ -20,7 +20,7 @@ import com.example.demo.repository.ItemRepository;
 @Service
 public class MonthlyCsvBatch {
 
-    private static final String BASE_DIR = "/Users/yuki/git/spring_myapp/upload/csv/";
+    private static final String BASE_DIR = "/Users/yuki/Downloads/work/spring_myapp/upload/csv/";
 
     @Autowired
     private ItemRepository itemRepository;
