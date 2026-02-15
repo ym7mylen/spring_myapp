@@ -80,7 +80,7 @@ spring_myapp/
 │   │   │   └── com/
 │   │   │       └── example/
 │   │   │           ├── batch
-│   │   │           │   └── BatchItemRegister.java          // バッジ処理のアイテム登録
+│   │   │           │   └── BatchItemRegister.java          // バッチ処理のアイテム登録
 │   │   │           ├── config
 │   │   │           │   ├── SecurityConfig.java　　          // セキュリティー設定
 │   │   │           │   └── WebConfig.java　　               // 外部フォルダをWebからアクセス可能にする設定
@@ -102,7 +102,7 @@ spring_myapp/
 │   │   │           │   ├── CustomUserDetailsService.java   // ユーザー認証サービス
 │   │   │           │   ├── ItemService.java                // 商品登録、更新、削除などの処理を行う
 │   │   │           │   ├── LogStatusService.java           // ステータス更新処理
-│   │   │           │   └── MonthlyCsvBatch.java            // 月次CSVバッジ処理
+│   │   │           │   └── MonthlyCsvBatch.java            // 月次CSVバッチ処理
 │   │   │           └── SpringMyappApplication.java
 │   │   ├── resources/
 │   │   │   ├── templates/
