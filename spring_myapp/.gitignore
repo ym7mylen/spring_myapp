@@ -39,3 +39,4 @@ out/
 # アップロード用フォルダは管理しない
 upload/
 
+.settings/

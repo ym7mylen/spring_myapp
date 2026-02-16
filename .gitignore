@@ -5,3 +5,5 @@ spring_myapp/src/main/java/com/example/demo/repository/DBManager.java
 spring_myapp/src/main/java/com/example/demo/repository/DBManager.java
 # アップロード用フォルダは管理しない
 upload/
+
+.settings/
