@@ -124,3 +124,22 @@ spring_myapp/
 │   └── mp4                              // 通話ログファイルの保存場所
 ├── Lesson12-1.spring_myapp(screenshot)  // このコールログアプリのキャプチャ保存フォルダ(画像8枚)
 ```
+## アプリ画面サンプル  
+<table>
+  <tr>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/%E6%96%B0%E8%A6%8F%E7%99%BB%E9%8C%B2%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/%E7%99%BB%E9%8C%B2%E5%AE%8C%E4%BA%86%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/%E3%83%AD%E3%82%B0%E3%82%A2%E3%82%A6%E3%83%88%E5%BE%8C%E3%81%AE%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/TOP%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/TOP%E7%94%BB%E9%9D%A2%E3%81%AB%E3%83%90%E3%83%83%E3%83%81%E5%87%A6%E7%90%86(%E6%9C%88%E6%AC%A1%E5%95%86%E5%93%81%E9%81%B8%E6%8A%9E)%E8%BF%BD%E5%8A%A0.png" alt="アプリ画面" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/%E4%B8%80%E8%88%AC%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC.%E3%83%AD%E3%82%B0%E8%A9%B3%E7%B4%B0%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/%E7%A2%BA%E8%AA%8D%E8%80%85.%E3%83%AD%E3%82%B0%E8%A9%B3%E7%B4%B0%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+    <td><img src="https://github.com/ym7mylen/spring_myapp/blob/main/Lesson12-1.spring_myapp(screenshot)/%E7%AE%A1%E7%90%86%E8%80%85.%E3%83%AD%E3%82%B0%E8%A9%B3%E7%B4%B0%E7%94%BB%E9%9D%A2.png" alt="アプリ画面" width="300"></td>
+  </tr>
+</table>
+
