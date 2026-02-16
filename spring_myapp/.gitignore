@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# アップロード用フォルダは管理しない
+upload/
+
